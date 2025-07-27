@@ -6,7 +6,7 @@ import ImageViewer from '@/components/ImageViewer';
 import { useState } from 'react';
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
 
-const PlaceholderImage = require('../../assets/images/react-logo@3x.png');
+const PlaceholderImage = require('../../assets/images/icon.png');
 
 export default function IndexScreen() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(undefined);
