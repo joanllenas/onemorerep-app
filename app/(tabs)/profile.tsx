@@ -2,23 +2,23 @@ import Button from '@/components/Button';
 import { useAuth } from '@/providers/AuthProvider';
 import { StyleSheet, View } from 'react-native';
 
-export default function LoginScreen() {
-  const { signIn } = useAuth();
-  function onLogin() {
-    signIn();
+export default function ProfileScreen() {
+  const { signOut } = useAuth();
+  function onLogout() {
+    signOut();
   }
 
   return (
     <View style={styles.container}>
-      <Button onPress={onLogin} theme="primary" label="Sign In" icon="sign-in" />
+      <Button onPress={onLogout} theme="primary" label="Sign Out" icon="sign-out" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#25292e',
     flex: 1,
+    backgroundColor: '#25292e',
     alignItems: 'center',
     justifyContent: 'center',
   },
