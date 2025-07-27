@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "onemorerep-app",
-    "slug": "onemorerep-app",
+    "slug": "onemorerep",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -39,6 +39,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCanary": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "1f54e87d-940d-4d16-b3ea-b5aad3b7a4ed"
+      }
+    },
+    "owner": "joanllenas"
   }
 }
