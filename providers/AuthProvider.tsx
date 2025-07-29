@@ -1,49 +1,99 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { account } from '@/utils/app-write';
+import { sleep } from '@/utils/debug';
 import React from 'react';
+import { AppState } from 'react-native';
+import { Models } from 'react-native-appwrite';
 
 interface AuthContextType {
-  isAuthenticated: boolean;
+  loggedInUser: Models.User<Models.Preferences> | null;
+  checkingInitialUser: boolean;
   loading: boolean;
-  signIn: () => Promise<void>;
+  otpUserId: string;
+  signIn: (email: string) => Promise<void>;
+  verifyOtp: (code: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
 
-const FAKE_TOKEN_KEY = 'fake_auth_token';
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [loggedInUser, setLoggedInUser] = React.useState<Models.User<Models.Preferences> | null>(null);
+  const [checkingInitialUser, setCheckingInitialUser] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
+  const [otpUserId, setOtpUserId] = React.useState('');
 
+  // Get Logged In user
   React.useEffect(() => {
-    const loadAuthState = async () => {
+    const fetchUser = async () => {
       try {
-        const token = await AsyncStorage.getItem(FAKE_TOKEN_KEY);
-        setIsAuthenticated(!!token);
-      } catch (error) {
-        // TODO: handle error
-        console.error('Failed to load auth state:', error);
+        const user = await account.get();
+        setLoggedInUser(user);
+      } catch {
+        setLoggedInUser(null);
       } finally {
+        setCheckingInitialUser(false);
         setLoading(false);
       }
     };
-    loadAuthState();
+    fetchUser();
   }, []);
 
-  const signIn = async () => {
-    // TODO: implement sign-in logic
-    await AsyncStorage.setItem(FAKE_TOKEN_KEY, 'dummy_token');
-    setIsAuthenticated(true);
+  // When app is focused, check user again
+  React.useEffect(() => {
+    const subscription = AppState.addEventListener('change', async (nextAppState) => {
+      if (nextAppState === 'active') {
+        setLoading(true);
+        try {
+          const user = await account.get();
+          setLoggedInUser(user);
+        } catch {
+          setLoggedInUser(null);
+        } finally {
+          setLoading(false);
+        }
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const resetAll = () => {
+    setOtpUserId('');
+    setLoggedInUser(null);
+    setLoading(false);
+  };
+
+  const signIn = async (email: string) => {
+    resetAll();
+    setLoading(true);
+    await sleep(1000);
+
+    // const token = await account.createEmailToken(ID.unique(), email);
+    // setOtpUserId(token.userId);
+    setLoading(false);
+  };
+
+  const verifyOtp = async (code: string) => {
+    setLoading(true);
+    await sleep(3000);
+    //await account.createSession(otpUserId, code);
+    //setLoggedInUser(await account.get());
+    setLoading(false);
   };
 
   const signOut = async () => {
-    // TODO: implement sign-out logic
-    await AsyncStorage.removeItem(FAKE_TOKEN_KEY);
-    setIsAuthenticated(false);
+    setLoading(true);
+    await account.deleteSessions();
+    resetAll();
   };
 
-  return <AuthContext.Provider value={{ isAuthenticated, signIn, signOut, loading }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ loggedInUser, checkingInitialUser, loading, otpUserId, signIn, verifyOtp, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export function useAuth() {
