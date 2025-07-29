@@ -13,7 +13,7 @@ export default function TabsLayout() {
           headerStyle: {
             backgroundColor: Color.Background,
           },
-          headerShadowVisible: false,
+          headerShadowVisible: true,
           headerTintColor: Color.White,
           tabBarStyle: {
             backgroundColor: Color.Background,
@@ -31,12 +31,12 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="dashboard"
+          name="programs"
           options={{
-            headerTitle: 'Dashboard',
-            title: 'Dashboard',
+            headerTitle: 'Programs',
+            title: 'Programs',
             tabBarIcon: ({ focused, color }) => (
-              <Ionicons size={20} name={focused ? 'diamond-sharp' : 'diamond-outline'} color={color} />
+              <Ionicons size={20} name={focused ? 'flash-sharp' : 'flash-outline'} color={color} />
             ),
           }}
         />

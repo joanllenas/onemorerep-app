@@ -13,10 +13,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function DashboardScreen() {
+export default function ProgramsScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Dashboard page!</Text>
+      <Text style={styles.text}>Programs page!</Text>
     </View>
   );
 }
