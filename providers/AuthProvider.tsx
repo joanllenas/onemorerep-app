@@ -8,10 +8,10 @@ interface AuthContextType {
   loggedInUser: Models.User<Models.Preferences> | null;
   checkingInitialUser: boolean;
   loading: boolean;
-  otpUserId: string;
   signIn: (email: string) => Promise<void>;
   verifyOtp: (code: string) => Promise<void>;
   signOut: () => Promise<void>;
+  resetAll: () => void;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ loggedInUser, checkingInitialUser, loading, otpUserId, signIn, verifyOtp, signOut }}>
+    <AuthContext.Provider value={{ loggedInUser, checkingInitialUser, loading, resetAll, signIn, verifyOtp, signOut }}>
       {children}
     </AuthContext.Provider>
   );

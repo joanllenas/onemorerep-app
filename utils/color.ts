@@ -12,6 +12,7 @@ export const Color = {
   //
   ButtonText: '#25292e',
   ButtonBackground: '#ffffff',
+  ButtonDisabledBorder: '#9CA3AF',
 
   //
   InputBorder: '#9CA3AF',

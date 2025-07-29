@@ -78,5 +78,6 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     opacity: 0.5,
+    borderColor: Color.ButtonDisabledBorder,
   },
 });

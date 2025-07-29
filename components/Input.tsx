@@ -32,6 +32,7 @@ export default function Input(props: TextInputProps) {
           backgroundColor: Color.InputBackground,
           color: Color.Text,
           borderWidth: 2,
+          letterSpacing: 0,
         },
         isFocused ? styles.focused : styles.blurred,
         style,
