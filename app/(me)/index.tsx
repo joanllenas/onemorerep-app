@@ -2,6 +2,7 @@ import Button from '@/components/Button';
 import CircleButton from '@/components/Circle';
 import IconButton from '@/components/IconButton';
 import ImageViewer from '@/components/ImageViewer';
+import { Color } from '@/utils/color';
 
 import { useState } from 'react';
 import { ImageSourcePropType, StyleSheet, View } from 'react-native';
@@ -58,7 +59,7 @@ export default function IndexScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Color.Background,
     alignItems: 'center',
     justifyContent: 'center',
   },

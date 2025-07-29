@@ -1,3 +1,4 @@
+import { Color } from '@/utils/color';
 import { useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
@@ -28,8 +29,8 @@ export default function Input(props: TextInputProps) {
           padding: 18,
           fontSize: 16,
           borderRadius: 10,
-          backgroundColor: '#1F2937',
-          color: '#fff',
+          backgroundColor: Color.InputBackground,
+          color: Color.Text,
           borderWidth: 2,
         },
         isFocused ? styles.focused : styles.blurred,
@@ -41,9 +42,9 @@ export default function Input(props: TextInputProps) {
 
 const styles = StyleSheet.create({
   blurred: {
-    borderColor: '#9CA3AF',
+    borderColor: Color.InputBorder,
   },
   focused: {
-    borderColor: '#ffd33d',
+    borderColor: Color.Primary,
   },
 });

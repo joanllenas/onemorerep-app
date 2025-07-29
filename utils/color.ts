@@ -1,0 +1,19 @@
+export const Color = {
+  White: '#ffffff',
+  Primary: '#ffd33d',
+  Text: '#F3F4F6',
+  TextMuted: '#9CA3AF',
+
+  //
+  Red: '#FF3B30',
+  RedSecondary: '#441320',
+  Background: '#25292e',
+
+  //
+  ButtonText: '#25292e',
+  ButtonBackground: '#ffffff',
+
+  //
+  InputBorder: '#9CA3AF',
+  InputBackground: '#1F2937',
+};

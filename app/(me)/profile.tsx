@@ -1,5 +1,6 @@
 import Button from '@/components/Button';
 import { useAuth } from '@/providers/AuthProvider';
+import { Color } from '@/utils/color';
 import { StyleSheet, View } from 'react-native';
 
 export default function ProfileScreen() {
@@ -18,7 +19,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#25292e',
+    backgroundColor: Color.Background,
     alignItems: 'center',
     justifyContent: 'center',
   },

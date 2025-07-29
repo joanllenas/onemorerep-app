@@ -1,3 +1,4 @@
+import { Color } from '@/utils/color';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -8,14 +9,14 @@ export default function TabsLayout() {
       <StatusBar style="light" />
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#ffd33d',
+          tabBarActiveTintColor: Color.Primary,
           headerStyle: {
-            backgroundColor: '#25292e',
+            backgroundColor: Color.Background,
           },
           headerShadowVisible: false,
-          headerTintColor: '#fff',
+          headerTintColor: Color.White,
           tabBarStyle: {
-            backgroundColor: '#25292e',
+            backgroundColor: Color.Background,
           },
         }}
       >

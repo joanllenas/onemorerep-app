@@ -1,3 +1,4 @@
+import { Color } from '@/utils/color';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -16,17 +17,17 @@ export default function Button({ label, theme, onPress, icon, loading, disabled 
       <View
         style={[
           styles.buttonContainer,
-          { borderWidth: 4, borderColor: '#ffd33d', borderRadius: 18 },
+          { borderWidth: 4, borderColor: Color.Primary, borderRadius: 18 },
           disabled && styles.buttonDisabled,
         ]}
       >
         <Pressable
-          style={[styles.button, { backgroundColor: '#fff' }]}
+          style={[styles.button, { backgroundColor: Color.ButtonBackground }]}
           onPress={onPress}
           disabled={disabled || loading}
         >
           {icon && <ButtonIcon icon={icon} loading={loading} />}
-          <Text style={[styles.buttonLabel, { color: '#25292e' }]}>{label}</Text>
+          <Text style={[styles.buttonLabel, { color: Color.ButtonText }]}>{label}</Text>
         </Pressable>
       </View>
     );
@@ -48,9 +49,9 @@ type IconProps = {
 
 function ButtonIcon({ loading, icon }: IconProps) {
   if (loading) {
-    return <ActivityIndicator size={18} style={styles.buttonIcon} color="#25292e" />;
+    return <ActivityIndicator size={18} style={styles.buttonIcon} color={Color.ButtonText} />;
   }
-  return <FontAwesome name={icon} size={18} color="#25292e" style={styles.buttonIcon} />;
+  return <FontAwesome name={icon} size={18} color={Color.ButtonText} style={styles.buttonIcon} />;
 }
 
 const styles = StyleSheet.create({
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
   },
   buttonLabel: {
-    color: '#fff',
+    color: Color.White,
     fontSize: 16,
   },
   buttonDisabled: {
