@@ -22,12 +22,15 @@ export default function Button({ label, theme, onPress, icon, loading, disabled 
         ]}
       >
         <Pressable
-          style={[styles.button, { backgroundColor: Color.ButtonBackground }]}
+          style={[styles.button, { backgroundColor: Color.ButtonBackground }, disabled && styles.buttonDisabled]}
           onPress={onPress}
           disabled={disabled || loading}
         >
-          {icon && <ButtonIcon icon={icon} loading={loading} />}
-          <Text style={[styles.buttonLabel, { color: Color.ButtonText }]}>{label}</Text>
+          <View style={styles.buttonContent}>
+            <ButtonIcon icon={icon} loading={loading} />
+            <Text style={styles.buttonLabel}>{label}</Text>
+            <View style={{ width: 18 }} />
+          </View>
         </Pressable>
       </View>
     );
@@ -36,22 +39,29 @@ export default function Button({ label, theme, onPress, icon, loading, disabled 
   return (
     <View style={[styles.buttonContainer, disabled && styles.buttonDisabled]}>
       <Pressable style={styles.button} onPress={onPress} disabled={disabled || loading}>
-        <Text style={styles.buttonLabel}>{label}</Text>
+        <View style={styles.buttonContent}>
+          <ButtonIcon icon={icon} loading={loading} color={Color.Text} />
+          <Text style={{ ...styles.buttonLabel, color: Color.White }}>{label}</Text>
+          <View style={{ width: 18 }} />
+        </View>
       </Pressable>
     </View>
   );
 }
 
 type IconProps = {
-  icon: keyof (typeof FontAwesome)['glyphMap'];
+  icon?: keyof (typeof FontAwesome)['glyphMap'];
   loading?: boolean;
+  color?: string;
 };
 
-function ButtonIcon({ loading, icon }: IconProps) {
+function ButtonIcon({ loading, icon, color }: IconProps) {
   if (loading) {
-    return <ActivityIndicator size={18} style={styles.buttonIcon} color={Color.ButtonText} />;
+    return <ActivityIndicator size={18} style={styles.buttonIcon} color={color || Color.ButtonText} />;
+  } else if (icon) {
+    return <FontAwesome name={icon} size={18} color={color || Color.ButtonText} style={styles.buttonIcon} />;
   }
-  return <FontAwesome name={icon} size={18} color={Color.ButtonText} style={styles.buttonIcon} />;
+  return <View style={{ width: 18 }} />;
 }
 
 const styles = StyleSheet.create({
@@ -72,8 +82,14 @@ const styles = StyleSheet.create({
   buttonIcon: {
     paddingRight: 8,
   },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: 16,
+  },
   buttonLabel: {
-    color: Color.White,
     fontSize: 16,
   },
   buttonDisabled: {
