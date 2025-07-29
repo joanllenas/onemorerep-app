@@ -1,8 +1,7 @@
 import { account } from '@/utils/app-write';
-import { sleep } from '@/utils/debug';
 import React from 'react';
 import { AppState } from 'react-native';
-import { Models } from 'react-native-appwrite';
+import { ID, Models } from 'react-native-appwrite';
 
 interface AuthContextType {
   loggedInUser: Models.User<Models.Preferences> | null;
@@ -68,18 +67,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signIn = async (email: string) => {
     resetAll();
     setLoading(true);
-    await sleep(1000);
-
-    // const token = await account.createEmailToken(ID.unique(), email);
-    // setOtpUserId(token.userId);
+    const token = await account.createEmailToken(ID.unique(), email);
+    setOtpUserId(token.userId);
     setLoading(false);
   };
 
   const verifyOtp = async (code: string) => {
     setLoading(true);
-    await sleep(3000);
-    //await account.createSession(otpUserId, code);
-    //setLoggedInUser(await account.get());
+    await account.createSession(otpUserId, code);
+    setLoggedInUser(await account.get());
     setLoading(false);
   };
 

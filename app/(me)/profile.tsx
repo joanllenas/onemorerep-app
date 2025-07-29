@@ -4,14 +4,14 @@ import { Color } from '@/utils/color';
 import { StyleSheet, View } from 'react-native';
 
 export default function ProfileScreen() {
-  const { signOut } = useAuth();
-  function onLogout() {
-    signOut();
+  const { signOut, loading } = useAuth();
+  async function onLogout() {
+    await signOut();
   }
 
   return (
     <View style={styles.container}>
-      <Button onPress={onLogout} theme="primary" label="Sign Out" icon="sign-out" />
+      <Button onPress={onLogout} theme="primary" label="Sign Out" icon="sign-out" loading={loading} />
     </View>
   );
 }
