@@ -44,6 +44,6 @@ export type WorkoutElement = Exercise | Rest | Block;
 export interface Workout {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   elements: WorkoutElement[];
 }
