@@ -31,10 +31,10 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="(programs)"
+          name="(workouts)"
           options={{
             headerShown: false,
-            title: 'Programs',
+            title: 'Workouts',
             tabBarIcon: ({ focused, color }) => (
               <Ionicons size={20} name={focused ? 'flash-sharp' : 'flash-outline'} color={color} />
             ),
