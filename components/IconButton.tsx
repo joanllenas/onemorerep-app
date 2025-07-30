@@ -9,12 +9,13 @@ type Props = {
   label?: string;
   onPress?: () => void;
   href?: Href;
+  dismissTo?: boolean;
 };
 
-export default function IconButton({ icon, label, onPress, href, color }: Props) {
+export default function IconButton({ icon, label, onPress, href, color, dismissTo }: Props) {
   if (href) {
     return (
-      <Link style={styles.iconButton} href={href}>
+      <Link style={styles.iconButton} href={href} dismissTo={dismissTo}>
         <MaterialIcons name={icon} size={24} color={color || Color.White} />
         {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
       </Link>

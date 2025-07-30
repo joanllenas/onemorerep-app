@@ -1,10 +1,10 @@
 import { Color } from '@/constants/color';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function NewProgramsScreen() {
+export default function ProgramScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>New Program page!</Text>
+      <Text style={styles.text}>Program page!</Text>
     </View>
   );
 }

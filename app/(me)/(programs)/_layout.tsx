@@ -4,6 +4,8 @@ import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
 export default function ProgramsLayout() {
+  function createProgram() {}
+  function saveProgram() {}
   return (
     <Stack
       screenOptions={{
@@ -20,7 +22,24 @@ export default function ProgramsLayout() {
           headerTitle: 'Programs',
         }}
       />
-      <Stack.Screen name="create-program" options={{ headerShown: false, presentation: 'modal' }} />
+      <Stack.Screen
+        name="create-program"
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Create Program',
+          headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(programs)" dismissTo />,
+          headerRight: (props) => <IconButton icon="save" label="" onPress={createProgram} color={Color.Primary} />,
+        }}
+      />
+      <Stack.Screen
+        name="[program]"
+        options={{
+          presentation: 'modal',
+          headerTitle: 'Program...',
+          headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(programs)" dismissTo />,
+          headerRight: (props) => <IconButton icon="save" label="" onPress={saveProgram} color={Color.Primary} />,
+        }}
+      />
     </Stack>
   );
 }

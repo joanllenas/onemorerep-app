@@ -1,5 +1,6 @@
 import Button from '@/components/Button';
 import { Color } from '@/constants/color';
+import { Padding } from '@/constants/sizes';
 import { useAuth } from '@/providers/AuthProvider';
 import { StyleSheet, View } from 'react-native';
 
@@ -19,7 +20,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: Padding.Screen,
     backgroundColor: Color.Background,
     alignItems: 'center',
     justifyContent: 'center',
