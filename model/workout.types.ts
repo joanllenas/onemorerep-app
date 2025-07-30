@@ -1,7 +1,7 @@
 export interface Rest {
   id: string;
   type: 'Rest';
-  /** in seconds */
+  // in seconds
   duration: number;
 }
 
@@ -9,31 +9,33 @@ export interface Exercise {
   id: string;
   type: 'Exercise';
   name: string;
-  properties: {
-    time: number | null;
+  properties?: {
+    // in seconds
+    time?: number;
     // in meters.
-    distance: number | null;
-    reps: number | 'AMRAP' | null;
+    distance?: number;
+    reps?: number | 'AMRAP';
     // Either in Kg or a description such as 'light', 'heavy' and so on.
-    weight: number | string | null;
+    weight?: number | string;
     // Either a number or a range such as [0, 1].
-    rir: number | number[] | null;
+    rir?: number | [number, number];
     // Youtube share URL.
-    video: string | null;
+    video?: string;
   };
 }
 
 export interface Block {
   id: string;
   type: 'Block';
-  name: string | null;
+  // Optional block name such as 'Warm-up', 'Upper Body' or 'Pull-up / Push-up Superset'
+  name?: string;
   // The elements this block is composed of. Nested blocks are supported.
   elements: WorkoutElement[];
-  properties: {
+  properties?: {
     // The number of times this block has to be done.
-    sets: number | null;
+    sets?: number;
     // How much rest between each set.
-    restBetweenSets: number | null;
+    restBetweenSets?: number;
   };
 }
 
