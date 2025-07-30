@@ -1,18 +1,30 @@
 import { Color } from '@/utils/color';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { Href, Link } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 type Props = {
   icon: keyof typeof MaterialIcons.glyphMap;
-  label: string;
-  onPress: () => void;
+  color?: string;
+  label?: string;
+  onPress?: () => void;
+  href?: Href;
 };
 
-export default function IconButton({ icon, label, onPress }: Props) {
+export default function IconButton({ icon, label, onPress, href, color }: Props) {
+  if (href) {
+    return (
+      <Link style={styles.iconButton} href={href}>
+        <MaterialIcons name={icon} size={24} color={color || Color.White} />
+        {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
+      </Link>
+    );
+  }
+
   return (
     <Pressable style={styles.iconButton} onPress={onPress}>
-      <MaterialIcons name={icon} size={24} color={Color.White} />
-      <Text style={styles.iconButtonLabel}>{label}</Text>
+      <MaterialIcons name={icon} size={24} color={color || Color.White} />
+      {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
     </Pressable>
   );
 }

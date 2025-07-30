@@ -1,13 +1,11 @@
 export const Color = {
   White: '#ffffff',
+  Background: '#25292e',
   Primary: '#ffd33d',
-  Text: '#F3F4F6',
-  TextMuted: '#9CA3AF',
 
   //
-  Red: '#FF3B30',
-  RedSecondary: '#441320',
-  Background: '#25292e',
+  Text: '#F3F4F6',
+  TextMuted: '#9CA3AF',
 
   //
   ButtonText: '#25292e',

@@ -13,7 +13,7 @@ export default function TabsLayout() {
           headerStyle: {
             backgroundColor: Color.Background,
           },
-          headerShadowVisible: true,
+          headerShadowVisible: false,
           headerTintColor: Color.White,
           tabBarStyle: {
             backgroundColor: Color.Background,
@@ -31,9 +31,9 @@ export default function TabsLayout() {
           }}
         />
         <Tabs.Screen
-          name="programs"
+          name="(programs)"
           options={{
-            headerTitle: 'Programs',
+            headerShown: false,
             title: 'Programs',
             tabBarIcon: ({ focused, color }) => (
               <Ionicons size={20} name={focused ? 'flash-sharp' : 'flash-outline'} color={color} />
