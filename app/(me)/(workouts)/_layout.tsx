@@ -25,7 +25,7 @@ export default function WorkoutsLayout() {
       <Stack.Screen
         name="create-workout"
         options={{
-          presentation: 'modal',
+          presentation: 'fullScreenModal',
           headerTitle: 'Create Workout',
           headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
           headerRight: (props) => <IconButton icon="save" label="" onPress={createWorkout} color={Color.Primary} />,
