@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://onemorerep.app/schemas/workout.schema.json",
+  "title": "Workout",
+  "type": "object",
+  "required": ["id", "title", "description", "elements"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "elements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/WorkoutElement" }
+    }
+  },
+  "$defs": {
+    "WorkoutElement": {
+      "oneOf": [{ "$ref": "#/$defs/Exercise" }, { "$ref": "#/$defs/Rest" }, { "$ref": "#/$defs/Block" }]
+    },
+    "Rest": {
+      "type": "object",
+      "required": ["id", "type", "duration"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "Rest" },
+        "duration": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "Exercise": {
+      "type": "object",
+      "required": ["id", "type", "name"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "Exercise" },
+        "name": { "type": "string" },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "time": { "type": "number" },
+            "distance": { "type": "number" },
+            "reps": {
+              "oneOf": [{ "type": "number" }, { "const": "AMRAP" }]
+            },
+            "weight": {
+              "oneOf": [{ "type": "number" }, { "type": "string" }]
+            },
+            "rir": {
+              "oneOf": [
+                { "type": "number" },
+                {
+                  "type": "array",
+                  "prefixItems": [{ "type": "number" }, { "type": "number" }],
+                  "items": false,
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              ]
+            },
+            "video": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Block": {
+      "type": "object",
+      "required": ["id", "type", "elements"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "Block" },
+        "name": { "type": "string" },
+        "elements": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/WorkoutElement" }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "sets": { "type": "number" },
+            "restBetweenSets": { "type": "number" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

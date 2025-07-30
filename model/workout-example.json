@@ -1,0 +1,124 @@
+{
+  "$schema": "./workout.schema.json",
+  "id": "wkt-001",
+  "title": "Full Body Conditioning",
+  "description": "A structured workout including warm-up, supersets, EMOMs, and cooldown for balanced conditioning.",
+  "elements": [
+    {
+      "id": "blk-warmup",
+      "type": "Block",
+      "name": "Warm-up",
+      "elements": [
+        {
+          "id": "ex-jumping-jacks",
+          "type": "Exercise",
+          "name": "Jumping Jacks",
+          "properties": {
+            "time": 60
+          }
+        },
+        {
+          "id": "ex-mountain-climbers",
+          "type": "Exercise",
+          "name": "Mountain Climbers",
+          "properties": {
+            "time": 45
+          }
+        },
+        {
+          "id": "rest-1",
+          "type": "Rest",
+          "duration": 30
+        }
+      ]
+    },
+    {
+      "id": "blk-main",
+      "type": "Block",
+      "name": "Main Circuit",
+      "elements": [
+        {
+          "id": "blk-superset-upper",
+          "type": "Block",
+          "name": "Upper Body Superset",
+          "elements": [
+            {
+              "id": "ex-push-ups",
+              "type": "Exercise",
+              "name": "Push-ups",
+              "properties": {
+                "reps": 12,
+                "rir": [1, 2]
+              }
+            },
+            {
+              "id": "ex-pull-ups",
+              "type": "Exercise",
+              "name": "Pull-ups",
+              "properties": {
+                "reps": "AMRAP",
+                "rir": 1
+              }
+            }
+          ],
+          "properties": {
+            "sets": 3,
+            "restBetweenSets": 60
+          }
+        },
+        {
+          "id": "blk-emom",
+          "type": "Block",
+          "name": "10-Minute EMOM",
+          "elements": [
+            {
+              "id": "ex-kettlebell-swings",
+              "type": "Exercise",
+              "name": "Kettlebell Swings",
+              "properties": {
+                "reps": 15,
+                "time": 60,
+                "weight": "moderate"
+              }
+            },
+            {
+              "id": "ex-burpees",
+              "type": "Exercise",
+              "name": "Burpees",
+              "properties": {
+                "reps": 10,
+                "time": 60
+              }
+            }
+          ],
+          "properties": {
+            "sets": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "blk-cooldown",
+      "type": "Block",
+      "name": "Cool Down",
+      "elements": [
+        {
+          "id": "ex-forward-fold",
+          "type": "Exercise",
+          "name": "Forward Fold",
+          "properties": {
+            "time": 60
+          }
+        },
+        {
+          "id": "ex-childs-pose",
+          "type": "Exercise",
+          "name": "Child's Pose",
+          "properties": {
+            "time": 60
+          }
+        }
+      ]
+    }
+  ]
+}
