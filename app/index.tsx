@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { Color } from '@/constants/color';
-import { Padding } from '@/constants/sizes';
+import { Size } from '@/constants/sizes';
 import { useAuth } from '@/providers/AuthProvider';
 import { Image } from 'expo-image';
 import { useState } from 'react';
@@ -95,10 +95,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: Padding.Screen,
+    padding: Size.Padding.Screen,
   },
   form: {
-    gap: 16,
+    gap: Size.Gap.Medium,
     flex: 1,
   },
   logo: {

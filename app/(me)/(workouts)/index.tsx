@@ -1,6 +1,6 @@
 import { IconSymbol } from '@/components/IconSymbol';
 import { Color } from '@/constants/color';
-import { Gap, Padding } from '@/constants/sizes';
+import { Size } from '@/constants/sizes';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
 import { useEffect, useState } from 'react';
@@ -33,7 +33,7 @@ export default function WorkoutsScreen() {
   return (
     <FlatList
       style={styles.containerBase}
-      contentContainerStyle={{ padding: Padding.Screen, gap: Gap.XLarge }}
+      contentContainerStyle={{ padding: Size.Padding.Screen, gap: Size.Gap.XLarge }}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       bounces={true}
