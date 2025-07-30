@@ -1,7 +1,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
+import { Color } from '@/constants/color';
 import { useAuth } from '@/providers/AuthProvider';
-import { Color } from '@/utils/color';
 import { Image } from 'expo-image';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';

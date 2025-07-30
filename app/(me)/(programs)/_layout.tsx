@@ -1,5 +1,5 @@
 import IconButton from '@/components/IconButton';
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 

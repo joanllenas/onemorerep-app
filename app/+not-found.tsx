@@ -1,4 +1,4 @@
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 

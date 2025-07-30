@@ -1,4 +1,4 @@
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 

@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 
 import { StyleSheet, View } from 'react-native';
 

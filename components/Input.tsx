@@ -1,4 +1,4 @@
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 import { useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 

@@ -1,4 +1,4 @@
-import { Color } from '@/utils/color';
+import { Color } from '@/constants/color';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Href, Link } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
