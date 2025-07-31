@@ -3,6 +3,7 @@ import { Size } from '@/constants/sizes';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
 import { FontAwesome } from '@expo/vector-icons';
+import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -40,24 +41,31 @@ export default function WorkoutsScreen() {
       data={workouts}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <View
-          style={{
-            gap: 6,
-            padding: Size.Padding.Medium,
-            width: '100%',
-            borderRadius: Size.BorderRadius.ListItem,
-            backgroundColor: Palette.surface,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+        <Link
+          href={{
+            pathname: '/[workout]',
+            params: { workout: item.id },
           }}
         >
-          <View style={{ gap: Size.Gap.Small, flex: 1 }}>
-            <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{item.title}</Text>
-            <Text style={{ fontSize: 13, color: Palette.textMuted }}>{item.description || ''}</Text>
+          <View
+            style={{
+              gap: 6,
+              padding: Size.Padding.Medium,
+              width: '100%',
+              borderRadius: Size.BorderRadius.ListItem,
+              backgroundColor: Palette.surface,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <View style={{ gap: Size.Gap.Small, flex: 1 }}>
+              <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{item.title}</Text>
+              <Text style={{ fontSize: 13, color: Palette.textMuted }}>{item.description || ''}</Text>
+            </View>
+            <FontAwesome name="chevron-right" size={20} color={Palette.textMuted} />
           </View>
-          <FontAwesome name="chevron-right" size={20} color={Palette.textMuted} />
-        </View>
+        </Link>
       )}
       ListEmptyComponent={<Text style={{ color: Palette.textPrimary }}>No workouts found.</Text>}
       contentInsetAdjustmentBehavior="automatic"

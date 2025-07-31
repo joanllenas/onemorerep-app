@@ -1,7 +1,6 @@
 import IconButton from '@/components/IconButton';
 import { Palette } from '@/constants/color';
 import { Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
 
 export default function WorkoutsLayout() {
   function createWorkout() {}
@@ -18,7 +17,7 @@ export default function WorkoutsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerRight: (props) => <IconButton icon="add" label="" href="/create-workout" color={Palette.accent} />,
+          headerRight: () => <IconButton icon="add" label="" href="/create-workout" color={Palette.accent} />,
           headerTitle: 'Workouts',
         }}
       />
@@ -27,21 +26,18 @@ export default function WorkoutsLayout() {
         options={{
           presentation: 'fullScreenModal',
           headerTitle: 'Create Workout',
-          headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
-          headerRight: (props) => <IconButton icon="save" label="" onPress={createWorkout} color={Palette.accent} />,
+          headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
+          headerRight: () => <IconButton icon="save" label="" onPress={createWorkout} color={Palette.accent} />,
         }}
       />
       <Stack.Screen
         name="[workout]"
         options={{
-          presentation: 'modal',
-          headerTitle: 'Workout...',
-          headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
-          headerRight: (props) => <IconButton icon="save" label="" onPress={saveWorkout} color={Palette.accent} />,
+          presentation: 'fullScreenModal',
+          headerTitle: '',
+          headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
         }}
       />
     </Stack>
   );
 }
-
-const styles = StyleSheet.create({});
