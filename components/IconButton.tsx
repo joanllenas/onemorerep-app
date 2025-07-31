@@ -1,4 +1,4 @@
-import { Color } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Href, Link } from 'expo-router';
 import { Pressable, StyleSheet, Text } from 'react-native';
@@ -16,7 +16,7 @@ export default function IconButton({ icon, label, onPress, href, color, dismissT
   if (href) {
     return (
       <Link style={styles.iconButton} href={href} dismissTo={dismissTo}>
-        <MaterialIcons name={icon} size={24} color={color || Color.White} />
+        <MaterialIcons name={icon} size={24} color={color || Palette.textPrimary} />
         {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
       </Link>
     );
@@ -24,7 +24,7 @@ export default function IconButton({ icon, label, onPress, href, color, dismissT
 
   return (
     <Pressable style={styles.iconButton} onPress={onPress}>
-      <MaterialIcons name={icon} size={24} color={color || Color.White} />
+      <MaterialIcons name={icon} size={24} color={color || Palette.textPrimary} />
       {label && <Text style={styles.iconButtonLabel}>{label}</Text>}
     </Pressable>
   );
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconButtonLabel: {
-    color: Color.White,
+    color: Palette.textPrimary,
     marginTop: 12,
   },
 });
