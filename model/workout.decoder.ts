@@ -7,7 +7,7 @@ const workoutDtoDecoder: JsonDecoder.Decoder<DtoWithoutMetadata> = JsonDecoder.o
   {
     $id: JsonDecoder.string(),
     title: JsonDecoder.string(),
-    description: JsonDecoder.string(),
+    description: JsonDecoder.optional(JsonDecoder.string()),
     elements: JsonDecoder.succeed(),
   },
   'WorkoutDto'

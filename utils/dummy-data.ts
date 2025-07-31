@@ -121,6 +121,52 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
       },
     ],
   },
+  {
+    $id: 'w4',
+    $permissions: [],
+    $createdAt: '2024-01-04T00:00:00.000Z',
+    $updatedAt: '2024-01-04T00:00:00.000Z',
+    $databaseId: 'db1',
+    $collectionId: 'col1',
+    title: 'Kettlebell 1',
+    elements: [
+      {
+        id: 'b1',
+        type: 'Block',
+        name: 'Push-Pull Superset',
+        elements: [
+          {
+            id: 'e5',
+            type: 'Exercise',
+            name: 'Bench Press',
+            properties: {
+              reps: 8,
+              weight: '70kg',
+              rir: 1,
+            },
+          },
+          {
+            id: 'e6',
+            type: 'Exercise',
+            name: 'Barbell Row',
+            properties: {
+              reps: 10,
+              weight: 60,
+            },
+          },
+          {
+            id: 'r3',
+            type: 'Rest',
+            duration: 90,
+          },
+        ],
+        properties: {
+          sets: 3,
+          restBetweenSets: 120,
+        },
+      },
+    ],
+  },
 ];
 
 export function fetchWorkouts(): Promise<Workout[]> {

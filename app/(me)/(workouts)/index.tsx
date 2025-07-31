@@ -52,43 +52,16 @@ export default function WorkoutsScreen() {
             alignItems: 'center',
           }}
         >
-          <ItemTitleAndDescription
-            title={item.title}
-            description={item.description}
-            isPrivate={item.title.includes('a')}
-          />
+          <View style={{ gap: Size.Gap.Small, flex: 1 }}>
+            <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{item.title}</Text>
+            <Text style={{ fontSize: 13, color: Palette.textMuted }}>{item.description || ''}</Text>
+          </View>
           <FontAwesome name="chevron-right" size={20} color={Palette.textMuted} />
         </View>
       )}
-      ListEmptyComponent={<Text style={styles.text}>No workouts found.</Text>}
+      ListEmptyComponent={<Text style={{ color: Palette.textPrimary }}>No workouts found.</Text>}
       contentInsetAdjustmentBehavior="automatic"
     />
-  );
-}
-
-function ItemTitleAndDescription({
-  title,
-  description,
-  isPrivate,
-}: {
-  title: string;
-  description?: string;
-  isPrivate: boolean;
-}) {
-  return (
-    <View style={{ gap: Size.Gap.Small, flex: 1 }}>
-      <ItemTitle title={title} isPrivate={isPrivate} />
-      {description && <Text style={{ fontSize: 13, color: Palette.textMuted }}>{description}</Text>}
-    </View>
-  );
-}
-
-function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: Size.Gap.Medium }}>
-      <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{title}</Text>
-      {isPrivate && <FontAwesome name="lock" size={20} color={Palette.textMuted} />}
-    </View>
   );
 }
 
@@ -101,8 +74,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  text: {
-    color: Palette.textPrimary,
   },
 });
