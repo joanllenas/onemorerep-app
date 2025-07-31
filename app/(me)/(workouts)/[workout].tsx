@@ -63,7 +63,7 @@ function Element({ element, depth }: { element: WorkoutElement; depth: number })
     case 'Exercise':
       return <ExerciseCard exercise={element} depth={depth} />;
     case 'Rest':
-      return <RestCard rest={element} depth={depth} />;
+      return <RestCard rest={element} />;
     case 'Block':
       return <BlockCard block={element} depth={depth} />;
     default:
@@ -92,9 +92,9 @@ function ExerciseCard({ exercise, depth }: { exercise: Exercise; depth: number }
   );
 }
 
-function RestCard({ rest, depth }: { rest: Rest; depth: number }) {
+function RestCard({ rest }: { rest: Rest }) {
   return (
-    <View style={[styles.card, styles.restCard, isEven(depth) && styles.evenCard]}>
+    <View style={[styles.card, styles.restCard]}>
       <View style={styles.restContent}>
         <View style={styles.restIcon}>
           <Text style={styles.restIconText}>⏸</Text>
