@@ -176,6 +176,119 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
       },
     ],
   },
+  {
+    $id: 'w5',
+    $permissions: [],
+    $createdAt: '2024-01-05T00:00:00.000Z',
+    $updatedAt: '2024-01-05T00:00:00.000Z',
+    $databaseId: 'db1',
+    $collectionId: 'col1',
+    title: 'Full Body Complex',
+    description:
+      'A mixed workout combining isolated elements and nested blocks for full-body strength and conditioning.',
+    elements: [
+      {
+        id: 'e1',
+        type: 'Exercise',
+        name: 'Air Squats',
+        properties: {
+          reps: 20,
+        },
+      },
+      {
+        id: 'r1',
+        type: 'Rest',
+        duration: 30,
+      },
+      {
+        id: 'b1',
+        type: 'Block',
+        name: 'Upper Body Strength',
+        elements: [
+          {
+            id: 'e2',
+            type: 'Exercise',
+            name: 'Push Press',
+            properties: {
+              reps: 10,
+              weight: 50,
+              rir: 2,
+            },
+          },
+          {
+            id: 'r2',
+            type: 'Rest',
+            duration: 45,
+          },
+          {
+            id: 'e3',
+            type: 'Exercise',
+            name: 'Chin-Ups',
+            properties: {
+              reps: 'AMRAP',
+              rir: [1, 2],
+            },
+          },
+        ],
+        properties: {
+          sets: 3,
+          restBetweenSets: 90,
+        },
+      },
+      {
+        id: 'b2',
+        type: 'Block',
+        name: 'Core and Conditioning',
+        elements: [
+          {
+            id: 'e4',
+            type: 'Exercise',
+            name: 'Plank Hold',
+            properties: {
+              time: 60,
+            },
+          },
+          {
+            id: 'b3',
+            type: 'Block',
+            name: 'Mini Cardio Finisher',
+            elements: [
+              {
+                id: 'e5',
+                type: 'Exercise',
+                name: 'Mountain Climbers',
+                properties: {
+                  time: 30,
+                  video: 'https://example.com/videos/mountain-climbers.mp4',
+                },
+              },
+              {
+                id: 'r3',
+                type: 'Rest',
+                duration: 15,
+              },
+              {
+                id: 'e6',
+                type: 'Exercise',
+                name: 'Jump Squats',
+                properties: {
+                  reps: 15,
+                },
+              },
+            ],
+            properties: {
+              sets: 2,
+              restBetweenSets: 30,
+            },
+          },
+        ],
+        properties: {
+          sets: 2,
+          restBetweenSets: 60,
+        },
+      },
+    ],
+  },
 ];
 
 export function fetchWorkouts(): Promise<Workout[]> {
