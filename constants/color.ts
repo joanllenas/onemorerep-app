@@ -1,9 +1,3 @@
-export const Color = {
-  //
-  InputBorder: '#9CA3AF',
-  InputBackground: '#1F2937',
-} as const;
-
 export const Palette = {
   // Core background
   background: '#25292e', // App background – dark gray
