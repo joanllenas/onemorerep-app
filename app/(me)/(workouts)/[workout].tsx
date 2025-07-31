@@ -39,7 +39,7 @@ export default function WorkoutDetailScreen() {
   }
 
   return (
-    <View style={{ backgroundColor: Palette.background }}>
+    <View style={{ backgroundColor: Palette.background, flex: 1 }}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>{workout.title}</Text>
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   typeLabel: {
     fontSize: 12,
     textTransform: 'uppercase',
-    color: Palette.success,
+    color: Palette.exerciseElement,
     fontWeight: '600',
   },
   properties: {
@@ -199,11 +199,11 @@ const styles = StyleSheet.create({
   },
   exerciseCard: {
     borderLeftWidth: 4,
-    borderLeftColor: Palette.success,
+    borderLeftColor: Palette.exerciseElement,
   },
   restCard: {
     borderLeftWidth: 4,
-    borderLeftColor: Palette.accentActive,
+    borderLeftColor: Palette.restElement,
     backgroundColor: '#2a2a2a',
   },
   restContent: {
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   restIcon: {
-    backgroundColor: Palette.accentActive,
+    backgroundColor: Palette.restElement,
     borderRadius: 12,
     width: 28,
     height: 28,
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   restType: {
-    color: Palette.accentActive,
+    color: Palette.restElement,
     fontSize: 12,
     textTransform: 'uppercase',
     fontWeight: '600',
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   },
   blockCard: {
     borderLeftWidth: 4,
-    borderLeftColor: Palette.link,
+    borderLeftColor: Palette.blockElement,
   },
   blockHeader: {
     padding: 16,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   blockType: {
     fontSize: 12,
     textTransform: 'uppercase',
-    color: Palette.link,
+    color: Palette.blockElement,
     fontWeight: '600',
   },
   blockProps: {

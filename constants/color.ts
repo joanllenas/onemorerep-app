@@ -27,4 +27,9 @@ export const Palette = {
   // Additional (if needed)
   link: '#ffd33d', // Links or interactive text – same as accent
   linkHover: '#ffea80', // Hover state for links
+
+  // Workout cards
+  blockElement: '#7dafff',
+  exerciseElement: '#6dd3b3',
+  restElement: '#f2b880',
 };
