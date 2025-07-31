@@ -5,6 +5,8 @@ import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+const surfaceDark = '#2a2f34';
+
 export default function WorkoutDetailScreen() {
   const { workout: workoutId } = useLocalSearchParams();
   const [workout, setWorkout] = React.useState<Workout | undefined>();
@@ -48,7 +50,7 @@ export default function WorkoutDetailScreen() {
 
         <View style={styles.elements}>
           {workout.elements.map((element) => (
-            <Element key={element.id} element={element} nested={false} />
+            <Element key={element.id} element={element} depth={0} />
           ))}
         </View>
       </ScrollView>
@@ -56,22 +58,24 @@ export default function WorkoutDetailScreen() {
   );
 }
 
-function Element({ element, nested }: { element: WorkoutElement; nested: boolean }) {
+function Element({ element, depth }: { element: WorkoutElement; depth: number }) {
   switch (element.type) {
     case 'Exercise':
-      return <ExerciseCard exercise={element} nested={nested} />;
+      return <ExerciseCard exercise={element} depth={depth} />;
     case 'Rest':
-      return <RestCard rest={element} nested={nested} />;
+      return <RestCard rest={element} depth={depth} />;
     case 'Block':
-      return <BlockCard block={element} nested={nested} />;
+      return <BlockCard block={element} depth={depth} />;
     default:
       return null;
   }
 }
 
-function ExerciseCard({ exercise, nested }: { exercise: Exercise; nested: boolean }) {
+const isEven = (n: number) => n % 2 === 0;
+
+function ExerciseCard({ exercise, depth }: { exercise: Exercise; depth: number }) {
   return (
-    <View style={[styles.card, styles.exerciseCard, nested && styles.nestedCard]}>
+    <View style={[styles.card, styles.exerciseCard, isEven(depth) && styles.evenCard]}>
       <View style={styles.cardHeader}>
         <Text style={styles.cardTitle}>{exercise.name}</Text>
         <Text style={styles.typeLabel}>Exercise</Text>
@@ -88,9 +92,9 @@ function ExerciseCard({ exercise, nested }: { exercise: Exercise; nested: boolea
   );
 }
 
-function RestCard({ rest, nested }: { rest: Rest; nested: boolean }) {
+function RestCard({ rest, depth }: { rest: Rest; depth: number }) {
   return (
-    <View style={[styles.card, styles.restCard, nested && styles.nestedCard]}>
+    <View style={[styles.card, styles.restCard, isEven(depth) && styles.evenCard]}>
       <View style={styles.restContent}>
         <View style={styles.restIcon}>
           <Text style={styles.restIconText}>⏸</Text>
@@ -104,9 +108,9 @@ function RestCard({ rest, nested }: { rest: Rest; nested: boolean }) {
   );
 }
 
-function BlockCard({ block, nested }: { block: Block; nested: boolean }) {
+function BlockCard({ block, depth }: { block: Block; depth: number }) {
   return (
-    <View style={[styles.card, styles.blockCard, nested && styles.nestedCard]}>
+    <View style={[styles.card, styles.blockCard, isEven(depth) && styles.evenCard]}>
       <View style={styles.blockHeader}>
         <View style={styles.blockHeaderRow}>
           <Text style={styles.blockTitle}>{block.name}</Text>
@@ -121,7 +125,7 @@ function BlockCard({ block, nested }: { block: Block; nested: boolean }) {
       </View>
       <View style={styles.blockElements}>
         {block.elements.map((el) => (
-          <Element key={el.id} element={el} nested={true} />
+          <Element key={el.id} element={el} depth={depth + 1} />
         ))}
       </View>
     </View>
@@ -157,8 +161,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: 'hidden',
   },
-  nestedCard: {
-    backgroundColor: '#2a2f34',
+  evenCard: {
+    backgroundColor: surfaceDark,
   },
   cardHeader: {
     padding: 16,
