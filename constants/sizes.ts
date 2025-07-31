@@ -19,4 +19,5 @@ export const Size = {
     XLarge: 18, // Tailwind's text-lg (1.125rem = 18px)
     XXLarge: 20, // Tailwind's text-xl (1.25rem = 20px)
   },
+  BorderRadius: { ListItem: 16 },
 } as const;

@@ -33,7 +33,7 @@ export default function WorkoutsScreen() {
   return (
     <FlatList
       style={styles.containerBase}
-      contentContainerStyle={{ padding: Size.Padding.Screen, gap: Size.Gap.XLarge }}
+      contentContainerStyle={{ gap: Size.Gap.XLarge }}
       showsVerticalScrollIndicator={false}
       showsHorizontalScrollIndicator={false}
       bounces={true}
@@ -43,13 +43,13 @@ export default function WorkoutsScreen() {
         <View
           style={{
             gap: 6,
-            padding: 16,
+            padding: Size.Padding.Medium,
             width: '100%',
-            borderRadius: 16,
-            alignItems: 'center',
+            borderRadius: Size.BorderRadius.ListItem,
+            backgroundColor: Color.Surface,
             flexDirection: 'row',
-            backgroundColor: '#262626',
             justifyContent: 'space-between',
+            alignItems: 'center',
           }}
         >
           <ItemTitleAndDescription
@@ -57,21 +57,12 @@ export default function WorkoutsScreen() {
             description={item.description}
             isPrivate={item.title.includes('a')}
           />
-          <IconSymbol name="chevron.right" size={20} color="#666666" />
+          <IconSymbol name="chevron.right" size={20} color={Color.TextMuted} />
         </View>
       )}
       ListEmptyComponent={<Text style={styles.text}>No workouts found.</Text>}
       contentInsetAdjustmentBehavior="automatic"
     />
-  );
-}
-
-function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) {
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-      <Text style={{ fontSize: 17 }}>{title}</Text>
-      {isPrivate && <IconSymbol name="lock.fill" size={20} color="#666666" />}
-    </View>
   );
 }
 
@@ -85,9 +76,18 @@ function ItemTitleAndDescription({
   isPrivate: boolean;
 }) {
   return (
-    <View style={{ gap: 4 }}>
+    <View style={{ gap: Size.Gap.Small }}>
       <ItemTitle title={title} isPrivate={isPrivate} />
-      {description && <Text style={{ fontSize: 13, color: '#666666' }}>{description}</Text>}
+      {description && <Text style={{ fontSize: 13, color: Color.TextMuted }}>{description}</Text>}
+    </View>
+  );
+}
+
+function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: Size.Gap.Medium }}>
+      <Text style={{ fontSize: Size.Text.Large, color: Color.Text }}>{title}</Text>
+      {isPrivate && <IconSymbol name="lock.fill" size={20} color="#666666" />}
     </View>
   );
 }
@@ -95,6 +95,7 @@ function ItemTitleAndDescription({
 const styles = StyleSheet.create({
   containerBase: {
     backgroundColor: Color.Background,
+    padding: Size.Padding.Screen,
   },
   container: {
     flex: 1,
