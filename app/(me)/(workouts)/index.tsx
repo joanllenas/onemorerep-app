@@ -1,5 +1,5 @@
 import { IconSymbol } from '@/components/IconSymbol';
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
@@ -25,7 +25,7 @@ export default function WorkoutsScreen() {
   if (loading) {
     return (
       <View style={[styles.containerBase, styles.container]}>
-        <ActivityIndicator size={18} color={Color.Text} />
+        <ActivityIndicator size={18} color={Palette.textPrimary} />
       </View>
     );
   }
@@ -57,7 +57,7 @@ export default function WorkoutsScreen() {
             description={item.description}
             isPrivate={item.title.includes('a')}
           />
-          <IconSymbol name="chevron.right" size={20} color={Color.TextMuted} />
+          <IconSymbol name="chevron.right" size={20} color={Palette.textMuted} />
         </View>
       )}
       ListEmptyComponent={<Text style={styles.text}>No workouts found.</Text>}
@@ -78,7 +78,7 @@ function ItemTitleAndDescription({
   return (
     <View style={{ gap: Size.Gap.Small }}>
       <ItemTitle title={title} isPrivate={isPrivate} />
-      {description && <Text style={{ fontSize: 13, color: Color.TextMuted }}>{description}</Text>}
+      {description && <Text style={{ fontSize: 13, color: Palette.textMuted }}>{description}</Text>}
     </View>
   );
 }
@@ -86,7 +86,7 @@ function ItemTitleAndDescription({
 function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: Size.Gap.Medium }}>
-      <Text style={{ fontSize: Size.Text.Large, color: Color.Text }}>{title}</Text>
+      <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{title}</Text>
       {isPrivate && <IconSymbol name="lock.fill" size={20} color="#666666" />}
     </View>
   );
@@ -103,6 +103,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: Color.Text,
+    color: Palette.textPrimary,
   },
 });

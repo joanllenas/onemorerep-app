@@ -1,4 +1,4 @@
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 20,
     textDecorationLine: 'underline',
-    color: Color.Text,
+    color: Palette.textPrimary,
   },
 });

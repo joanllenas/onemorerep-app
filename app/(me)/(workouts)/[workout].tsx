@@ -1,4 +1,4 @@
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function WorkoutScreen() {
@@ -17,6 +17,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    color: Color.Text,
+    color: Palette.textPrimary,
   },
 });

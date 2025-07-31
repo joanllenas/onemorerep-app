@@ -2,10 +2,6 @@ export const Color = {
   White: '#ffffff',
 
   //
-  Text: '#F3F4F6',
-  TextMuted: '#9CA3AF',
-
-  //
   ButtonText: '#25292e',
   ButtonBackground: '#ffffff',
   ButtonDisabledBorder: '#9CA3AF',

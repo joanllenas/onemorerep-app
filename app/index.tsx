@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
 import { useAuth } from '@/providers/AuthProvider';
 import { Image } from 'expo-image';
@@ -112,6 +112,6 @@ const styles = StyleSheet.create({
   otpText: {
     fontSize: 10,
     paddingHorizontal: 4,
-    color: Color.TextMuted,
+    color: Palette.textMuted,
   },
 });

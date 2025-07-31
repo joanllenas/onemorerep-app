@@ -1,5 +1,5 @@
 import IconButton from '@/components/IconButton';
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import { Stack } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
@@ -9,7 +9,7 @@ export default function WorkoutsLayout() {
   return (
     <Stack
       screenOptions={{
-        headerTintColor: Color.Text,
+        headerTintColor: Palette.textPrimary,
         headerStyle: {
           backgroundColor: Palette.background,
         },

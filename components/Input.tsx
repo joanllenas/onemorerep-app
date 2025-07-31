@@ -30,7 +30,7 @@ export default function Input(props: TextInputProps) {
           fontSize: 16,
           borderRadius: 10,
           backgroundColor: Color.InputBackground,
-          color: Color.Text,
+          color: Palette.textPrimary,
           borderWidth: 2,
           letterSpacing: 0,
         },
