@@ -24,7 +24,7 @@ export default function WorkoutDetailScreen() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
         <ActivityIndicator size={18} color={Palette.textPrimary} />
       </View>
     );
@@ -32,7 +32,7 @@ export default function WorkoutDetailScreen() {
 
   if (!workout) {
     return (
-      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
         <Text style={{ color: Palette.danger }}>This workout could not be found</Text>
       </View>
     );
