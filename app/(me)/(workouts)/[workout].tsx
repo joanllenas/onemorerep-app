@@ -1,6 +1,7 @@
 import { Palette } from '@/constants/color';
 import { Block, Exercise, Rest, Workout, WorkoutElement } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
+import { FontAwesome } from '@expo/vector-icons';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -97,7 +98,7 @@ function RestCard({ rest }: { rest: Rest }) {
     <View style={[styles.card, styles.restCard]}>
       <View style={styles.restContent}>
         <View style={styles.restIcon}>
-          <Text style={styles.restIconText}>⏸</Text>
+          <FontAwesome name="clock-o" size={18} color={surfaceDark} />
         </View>
         <View>
           <Text style={styles.restType}>Rest</Text>
@@ -223,10 +224,6 @@ const styles = StyleSheet.create({
     height: 28,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  restIconText: {
-    color: 'white',
-    fontSize: 14,
   },
   restType: {
     color: Palette.restElement,
