@@ -34,9 +34,6 @@ export default function WorkoutsLayout() {
         options={{
           headerTitle: '',
           headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
-          headerRight: () => (
-            <IconButton icon="play-circle-outline" label="" href="/play-workout" color={Palette.accent} />
-          ),
         }}
       />
       <Stack.Screen

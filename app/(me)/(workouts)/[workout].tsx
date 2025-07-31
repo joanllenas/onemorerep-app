@@ -1,4 +1,6 @@
+import Button from '@/components/Button';
 import { Palette } from '@/constants/color';
+import { Size } from '@/constants/sizes';
 import { Block, Exercise, Rest, Workout, WorkoutElement } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
 import { FontAwesome } from '@expo/vector-icons';
@@ -48,6 +50,8 @@ export default function WorkoutDetailScreen() {
           <Text style={styles.title}>{workout.title}</Text>
           <Text style={styles.description}>{workout.description}</Text>
         </View>
+
+        <Button theme="primary" label="Open In Workout Player" icon="play" />
 
         <View style={styles.elements}>
           {workout.elements.map((element) => (
@@ -137,12 +141,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 24,
     backgroundColor: Palette.background,
+    gap: Size.Gap.XLarge,
   },
   header: {
     backgroundColor: Palette.surface,
     padding: 20,
     borderRadius: 12,
-    marginBottom: 20,
   },
   title: {
     fontSize: 24,
@@ -155,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   elements: {
-    gap: 16,
+    gap: Size.Gap.Large,
   },
   card: {
     backgroundColor: Palette.surface,
