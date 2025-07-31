@@ -1,8 +1,8 @@
-import { IconSymbol } from '@/components/IconSymbol';
 import { Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
+import { FontAwesome } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 
@@ -57,7 +57,7 @@ export default function WorkoutsScreen() {
             description={item.description}
             isPrivate={item.title.includes('a')}
           />
-          <IconSymbol name="chevron.right" size={20} color={Palette.textMuted} />
+          <FontAwesome name="chevron-right" size={20} color={Palette.textMuted} />
         </View>
       )}
       ListEmptyComponent={<Text style={styles.text}>No workouts found.</Text>}
@@ -76,7 +76,7 @@ function ItemTitleAndDescription({
   isPrivate: boolean;
 }) {
   return (
-    <View style={{ gap: Size.Gap.Small }}>
+    <View style={{ gap: Size.Gap.Small, flex: 1 }}>
       <ItemTitle title={title} isPrivate={isPrivate} />
       {description && <Text style={{ fontSize: 13, color: Palette.textMuted }}>{description}</Text>}
     </View>
@@ -87,7 +87,7 @@ function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: Size.Gap.Medium }}>
       <Text style={{ fontSize: Size.Text.Large, color: Palette.textPrimary }}>{title}</Text>
-      {isPrivate && <IconSymbol name="lock.fill" size={20} color="#666666" />}
+      {isPrivate && <FontAwesome name="lock" size={20} color={Palette.textMuted} />}
     </View>
   );
 }
