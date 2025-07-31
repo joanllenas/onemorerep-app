@@ -1,6 +1,6 @@
 import IconButton from '@/components/IconButton';
 import { Palette } from '@/constants/color';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 
 export default function WorkoutsLayout() {
   function createWorkout() {}
@@ -24,7 +24,6 @@ export default function WorkoutsLayout() {
       <Stack.Screen
         name="create-workout"
         options={{
-          presentation: 'fullScreenModal',
           headerTitle: 'Create Workout',
           headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
           headerRight: () => <IconButton icon="save" label="" onPress={createWorkout} color={Palette.accent} />,
@@ -33,9 +32,19 @@ export default function WorkoutsLayout() {
       <Stack.Screen
         name="[workout]"
         options={{
-          presentation: 'fullScreenModal',
           headerTitle: '',
           headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
+          headerRight: () => (
+            <IconButton icon="play-circle-outline" label="" href="/play-workout" color={Palette.accent} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="play-workout"
+        options={{
+          presentation: 'fullScreenModal',
+          headerTitle: 'Play Workout',
+          headerLeft: () => <IconButton icon="chevron-left" label="" onPress={() => router.back()} dismissTo />,
         }}
       />
     </Stack>
