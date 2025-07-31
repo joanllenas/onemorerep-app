@@ -1,4 +1,4 @@
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -17,7 +17,7 @@ export default function Button({ label, theme, onPress, icon, loading, disabled 
       <View
         style={[
           styles.buttonContainer,
-          { borderWidth: 4, borderColor: Color.Primary, borderRadius: 18 },
+          { borderWidth: 4, borderColor: Palette.accent, borderRadius: 18 },
           disabled && styles.buttonDisabled,
         ]}
       >

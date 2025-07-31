@@ -18,7 +18,7 @@ export default function WorkoutsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerRight: (props) => <IconButton icon="add" label="" href="/create-workout" color={Color.Primary} />,
+          headerRight: (props) => <IconButton icon="add" label="" href="/create-workout" color={Palette.accent} />,
           headerTitle: 'Workouts',
         }}
       />
@@ -28,7 +28,7 @@ export default function WorkoutsLayout() {
           presentation: 'fullScreenModal',
           headerTitle: 'Create Workout',
           headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
-          headerRight: (props) => <IconButton icon="save" label="" onPress={createWorkout} color={Color.Primary} />,
+          headerRight: (props) => <IconButton icon="save" label="" onPress={createWorkout} color={Palette.accent} />,
         }}
       />
       <Stack.Screen
@@ -37,7 +37,7 @@ export default function WorkoutsLayout() {
           presentation: 'modal',
           headerTitle: 'Workout...',
           headerLeft: (props) => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
-          headerRight: (props) => <IconButton icon="save" label="" onPress={saveWorkout} color={Color.Primary} />,
+          headerRight: (props) => <IconButton icon="save" label="" onPress={saveWorkout} color={Palette.accent} />,
         }}
       />
     </Stack>

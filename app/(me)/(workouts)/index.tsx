@@ -46,7 +46,7 @@ export default function WorkoutsScreen() {
             padding: Size.Padding.Medium,
             width: '100%',
             borderRadius: Size.BorderRadius.ListItem,
-            backgroundColor: Color.Surface,
+            backgroundColor: Palette.surface,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',

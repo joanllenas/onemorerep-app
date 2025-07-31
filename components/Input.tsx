@@ -1,4 +1,4 @@
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import { useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
@@ -46,6 +46,6 @@ const styles = StyleSheet.create({
     borderColor: Color.InputBorder,
   },
   focused: {
-    borderColor: Color.Primary,
+    borderColor: Palette.accent,
   },
 });

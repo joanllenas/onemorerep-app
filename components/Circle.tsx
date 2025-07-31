@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     height: 84,
     marginHorizontal: 60,
     borderWidth: 4,
-    borderColor: Color.Primary,
+    borderColor: Palette.accent,
     borderRadius: 42,
     padding: 3,
   },

@@ -1,9 +1,5 @@
 export const Color = {
   White: '#ffffff',
-  Background: '#25292e',
-  Surface: '#2f343a',
-  BackgroundTertiary: '#3F4A56',
-  Primary: '#ffd33d',
 
   //
   Text: '#F3F4F6',
