@@ -8,8 +8,11 @@ export default function IndexScreen() {
   return (
     <View style={styles.container}>
       <Button theme="primary" label="Choose a photo" onPress={onSomething} icon="address-book-o" />
-      <Button theme="primary" icon="address-book" label="Choose a photo" onPress={onSomething} />
+      <Button theme="primary" label="Choose a photo" onPress={onSomething} icon="address-book" loading={true} />
+      <Button theme="primary" label="Choose a photo" onPress={onSomething} icon="address-book" disabled={true} />
       <Button label="Use this photo" onPress={onSomething} icon="address-book" />
+      <Button label="Use this photo" onPress={onSomething} icon="address-book" loading={true} />
+      <Button label="Use this photo" onPress={onSomething} icon="address-book" disabled={true} />
     </View>
   );
 }

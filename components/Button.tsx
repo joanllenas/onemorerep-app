@@ -1,4 +1,4 @@
-import { Color, Palette } from '@/constants/color';
+import { Palette } from '@/constants/color';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
@@ -12,36 +12,29 @@ type Props = {
 };
 
 export default function Button({ label, theme, onPress, icon, loading, disabled }: Props) {
-  if (theme === 'primary') {
-    return (
-      <View
-        style={[
-          styles.buttonContainer,
-          { borderWidth: 4, borderColor: Palette.accent, borderRadius: 18 },
-          disabled && styles.buttonDisabled,
-        ]}
-      >
-        <Pressable
-          style={[styles.button, { backgroundColor: Color.ButtonBackground }, disabled && styles.buttonDisabled]}
-          onPress={onPress}
-          disabled={disabled || loading}
-        >
-          <View style={styles.buttonContent}>
-            <ButtonIcon icon={icon} loading={loading} />
-            <Text style={styles.buttonLabel}>{label}</Text>
-            <View style={{ width: 18 }} />
-          </View>
-        </Pressable>
-      </View>
-    );
-  }
+  const isPrimary = theme === 'primary';
+
+  const buttonBackground = disabled ? Palette.disabled : isPrimary ? Palette.accent : Palette.surface;
+
+  const textColor = isPrimary ? (disabled ? Palette.textMuted : Palette.background) : Palette.textPrimary;
+  const iconColor = textColor;
 
   return (
-    <View style={[styles.buttonContainer, disabled && styles.buttonDisabled]}>
-      <Pressable style={styles.button} onPress={onPress} disabled={disabled || loading}>
+    <View
+      style={[
+        styles.buttonContainer,
+        isPrimary && { borderWidth: 4, borderColor: Palette.accent, borderRadius: 18 },
+        disabled && styles.buttonDisabled,
+      ]}
+    >
+      <Pressable
+        style={[styles.button, { backgroundColor: buttonBackground }, disabled && styles.buttonDisabled]}
+        onPress={onPress}
+        disabled={disabled || loading}
+      >
         <View style={styles.buttonContent}>
-          <ButtonIcon icon={icon} loading={loading} color={Color.Text} />
-          <Text style={{ ...styles.buttonLabel, color: Color.White }}>{label}</Text>
+          <ButtonIcon icon={icon} loading={loading} color={iconColor} />
+          <Text style={{ ...styles.buttonLabel, color: textColor }}>{label}</Text>
           <View style={{ width: 18 }} />
         </View>
       </Pressable>
@@ -57,9 +50,9 @@ type IconProps = {
 
 function ButtonIcon({ loading, icon, color }: IconProps) {
   if (loading) {
-    return <ActivityIndicator size={18} style={styles.buttonIcon} color={color || Color.ButtonText} />;
+    return <ActivityIndicator size={18} style={styles.buttonIcon} color={color} />;
   } else if (icon) {
-    return <FontAwesome name={icon} size={18} color={color || Color.ButtonText} style={styles.buttonIcon} />;
+    return <FontAwesome name={icon} size={18} color={color} style={styles.buttonIcon} />;
   }
   return <View style={{ width: 18 }} />;
 }
@@ -94,6 +87,5 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     opacity: 0.5,
-    borderColor: Color.ButtonDisabledBorder,
   },
 });
