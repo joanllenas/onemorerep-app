@@ -148,7 +148,7 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
           {
             id: 'e6',
             type: 'Exercise',
-            name: 'Barbell Row',
+            name: 'Deadlift',
             properties: {
               reps: 10,
               weight: 60,
@@ -158,6 +158,15 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
             id: 'r3',
             type: 'Rest',
             duration: 90,
+          },
+          {
+            id: 'e7',
+            type: 'Exercise',
+            name: 'Barbell Row',
+            properties: {
+              reps: 10,
+              weight: 60,
+            },
           },
         ],
         properties: {
