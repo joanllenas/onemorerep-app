@@ -1,6 +1,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
 import { useAuth } from '@/providers/AuthProvider';
 import { Image } from 'expo-image';
@@ -90,7 +90,7 @@ export default function LoginScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Color.Background,
+    backgroundColor: Palette.background,
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,5 +1,5 @@
 import Button from '@/components/Button';
-import { Color } from '@/constants/color';
+import { Palette } from '@/constants/color';
 
 import { StyleSheet, View } from 'react-native';
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     gap: 16,
-    backgroundColor: Color.Background,
+    backgroundColor: Palette.background,
     alignItems: 'center',
     justifyContent: 'center',
   },

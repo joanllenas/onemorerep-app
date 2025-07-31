@@ -1,4 +1,4 @@
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import { Link, Stack } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
@@ -18,7 +18,7 @@ export default function NotFoundScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.Background,
+    backgroundColor: Palette.background,
     justifyContent: 'center',
     alignItems: 'center',
   },

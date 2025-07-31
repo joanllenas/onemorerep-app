@@ -1,4 +1,4 @@
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -11,12 +11,12 @@ export default function TabsLayout() {
         screenOptions={{
           tabBarActiveTintColor: Color.Primary,
           headerStyle: {
-            backgroundColor: Color.Background,
+            backgroundColor: Palette.background,
           },
           headerShadowVisible: false,
           headerTintColor: Color.White,
           tabBarStyle: {
-            backgroundColor: Color.Background,
+            backgroundColor: Palette.background,
           },
         }}
       >

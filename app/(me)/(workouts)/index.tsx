@@ -1,5 +1,5 @@
 import { IconSymbol } from '@/components/IconSymbol';
-import { Color } from '@/constants/color';
+import { Color, Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
@@ -94,7 +94,7 @@ function ItemTitle({ title, isPrivate }: { title: string; isPrivate: boolean }) 
 
 const styles = StyleSheet.create({
   containerBase: {
-    backgroundColor: Color.Background,
+    backgroundColor: Palette.background,
     padding: Size.Padding.Screen,
   },
   container: {
