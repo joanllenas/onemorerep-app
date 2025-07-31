@@ -30,14 +30,14 @@ export default function WorkoutsLayout() {
         }}
       />
       <Stack.Screen
-        name="[workout]"
+        name="detail/[workout]"
         options={{
           headerTitle: '',
           headerLeft: () => <IconButton icon="chevron-left" label="" href="/(me)/(workouts)" dismissTo />,
         }}
       />
       <Stack.Screen
-        name="play-workout"
+        name="play/[workout]"
         options={{
           presentation: 'fullScreenModal',
           headerTitle: 'Play Workout',

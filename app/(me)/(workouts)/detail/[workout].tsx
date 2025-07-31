@@ -4,7 +4,7 @@ import { Size } from '@/constants/sizes';
 import { Block, Exercise, Rest, Workout, WorkoutElement } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
 import { FontAwesome } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -12,8 +12,16 @@ const surfaceDark = '#2a2f34';
 
 export default function WorkoutDetailScreen() {
   const { workout: workoutId } = useLocalSearchParams();
+  const router = useRouter();
   const [workout, setWorkout] = React.useState<Workout | undefined>();
   const [loading, setLoading] = React.useState(true);
+
+  function gotoPlayer() {
+    router.push({
+      pathname: `/play/[workout]`,
+      params: { workout: workoutId as string },
+    });
+  }
 
   React.useEffect(() => {
     fetchWorkouts()
@@ -38,7 +46,7 @@ export default function WorkoutDetailScreen() {
   if (!workout) {
     return (
       <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
-        <Text style={{ color: Palette.danger }}>This workout could not be found</Text>
+        <Text style={{ color: Palette.danger }}>Workout {workoutId} could not be found</Text>
       </View>
     );
   }
@@ -51,7 +59,7 @@ export default function WorkoutDetailScreen() {
           <Text style={styles.description}>{workout.description}</Text>
         </View>
 
-        <Button theme="primary" label="Open In Workout Player" icon="play" />
+        <Button theme="primary" label="Open In Workout Player" icon="play" onPress={gotoPlayer} />
 
         <View style={styles.elements}>
           {workout.elements.map((element) => (

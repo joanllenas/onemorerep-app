@@ -9,8 +9,6 @@ export default function PlayWorkoutsScreen() {
   const { workout: workoutId } = useLocalSearchParams();
   const [loading, setLoading] = React.useState(true);
   const [workout, setWorkout] = React.useState<Workout | undefined>();
-  const [playerStatus, setPlayerStatus] = React.useState<'playing' | 'paused' | 'stopped'>('stopped');
-  const [elapsedTime, setElapsedTime] = React.useState(0);
 
   React.useEffect(() => {
     fetchWorkouts()
@@ -35,22 +33,14 @@ export default function PlayWorkoutsScreen() {
   if (!workout) {
     return (
       <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
-        <Text style={{ color: Palette.danger }}>This workout could not be found</Text>
+        <Text style={{ color: Palette.danger }}>Workout {workoutId} could not be found</Text>
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Play Workout!</Text>
-    </View>
-  );
-}
-
-function StartScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Start Workout!</Text>
+      <Text style={{ color: Palette.textPrimary }}>Play Workout!</Text>
     </View>
   );
 }
@@ -61,8 +51,5 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.background,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  text: {
-    color: Palette.textPrimary,
   },
 });

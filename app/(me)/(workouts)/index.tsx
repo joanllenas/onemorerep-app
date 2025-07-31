@@ -43,7 +43,7 @@ export default function WorkoutsScreen() {
       renderItem={({ item }) => (
         <Link
           href={{
-            pathname: '/[workout]',
+            pathname: '/detail/[workout]',
             params: { workout: item.id },
           }}
         >
