@@ -4,6 +4,8 @@ import { fetchWorkouts } from '@/utils/dummy-data';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import WorkoutPlayer from './_helpers/_WorkoutPlayer';
+import { flattenWorkoutElements } from './_helpers/_utils';
 
 export default function PlayWorkoutsScreen() {
   const { workout: workoutId } = useLocalSearchParams();
@@ -13,7 +15,11 @@ export default function PlayWorkoutsScreen() {
   React.useEffect(() => {
     fetchWorkouts()
       .then((data) => {
-        setWorkout(data.find((item) => item.id === workoutId));
+        const wk = data.find((item) => item.id === workoutId);
+        if (!wk) {
+          throw new Error(`Workout ${workoutId} not found.`);
+        }
+        setWorkout({ ...wk, elements: flattenWorkoutElements(wk.elements) });
         setLoading(false);
       })
       .catch((error) => {
@@ -24,7 +30,7 @@ export default function PlayWorkoutsScreen() {
 
   if (loading) {
     return (
-      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
+      <View style={styles.container}>
         <ActivityIndicator size={18} color={Palette.textPrimary} />
       </View>
     );
@@ -32,7 +38,7 @@ export default function PlayWorkoutsScreen() {
 
   if (!workout) {
     return (
-      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center', flex: 1 }]}>
+      <View style={styles.container}>
         <Text style={{ color: Palette.danger }}>Workout {workoutId} could not be found</Text>
       </View>
     );
@@ -40,7 +46,7 @@ export default function PlayWorkoutsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: Palette.textPrimary }}>Play Workout!</Text>
+      <WorkoutPlayer workout={workout} />
     </View>
   );
 }
