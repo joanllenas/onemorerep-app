@@ -55,10 +55,12 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
     }
 
     case 'TICK': {
+      const elapsedTime = state.elapsedTime + 1;
+
       if (state.elementTimer === null) {
         return {
           ...state,
-          elapsedTime: state.elapsedTime + 1,
+          elapsedTime,
         };
       }
 
@@ -66,12 +68,13 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
         const restTimeRemaining = Math.max(0, state.elementTimer.remaining - 1);
 
         if (restTimeRemaining === 0) {
-          return nextElementFn(state);
+          return nextElementFn({ ...state, elapsedTime });
         }
 
         return {
           ...state,
           elementTimer: { type: 'rest', remaining: restTimeRemaining },
+          elapsedTime,
         };
       }
 
@@ -81,12 +84,13 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
         const timeRemaining = Math.max(0, currentExercise.properties?.time! - exerciseTimeElapsed);
 
         if (timeRemaining === 0) {
-          return nextElementFn(state);
+          return nextElementFn({ ...state, elapsedTime });
         }
 
         return {
           ...state,
           elementTimer: { type: 'exercise', elapsed: exerciseTimeElapsed },
+          elapsedTime,
         };
       }
 
@@ -107,9 +111,9 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
 
 function nextElementFn(state: WorkoutState): WorkoutState {
   const nextIndex = state.currentElementIndex + 1;
-  const isLastExercise = nextIndex >= state.elements.length;
+  const isLastElement = nextIndex >= state.elements.length;
 
-  if (isLastExercise) {
+  if (isLastElement) {
     return {
       ...state,
       playerStatus: 'completed',
@@ -122,7 +126,7 @@ function nextElementFn(state: WorkoutState): WorkoutState {
     return {
       ...state,
       currentElementIndex: nextIndex,
-      elementTimer: { type: 'exercise', elapsed: 0 },
+      elementTimer: nextElement.properties?.time ? { type: 'exercise', elapsed: 0 } : null,
     };
   } else if (nextElement.type === 'Rest') {
     return {

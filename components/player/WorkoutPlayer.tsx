@@ -84,7 +84,10 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
           </>
         ) : currentExercise.type === 'Rest' ? (
           state.elementTimer?.type === 'rest' && (
-            <Text style={styles.timeInfo}>{formatSeconds(state.elementTimer.remaining)}</Text>
+            <>
+              <Text style={styles.exerciseName}>Rest</Text>
+              <Text style={styles.timeInfo}>{formatSeconds(state.elementTimer.remaining)}</Text>
+            </>
           )
         ) : null}
       </View>

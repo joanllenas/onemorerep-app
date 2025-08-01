@@ -26,7 +26,7 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
       {
         id: 'r1',
         type: 'Rest',
-        duration: 60,
+        duration: 20,
       },
       {
         id: 'e2',
