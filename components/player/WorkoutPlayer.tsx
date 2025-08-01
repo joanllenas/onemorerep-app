@@ -1,12 +1,12 @@
 import { Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
-import { Exercise, Workout } from '@/model/workout.types';
+import { Workout, WorkoutElement } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../Button';
 import { workoutActions } from './actions';
-import { initialState, workoutReducer } from './reducer';
+import { ElementTimer, initialState, workoutReducer } from './reducer';
 import { formatSeconds } from './utils';
 
 export default function WorkoutPlayer({ workout }: { workout: Workout }) {
@@ -70,45 +70,25 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.statusContainer}>
-        <Text style={styles.totalTime}>Elapsed Time: {formatSeconds(state.elapsedTime)}</Text>
+      <Top elapsedTime={state.elapsedTime} currentElement={currentExercise} />
 
-        {currentExercise.type === 'Exercise' ? (
-          <>
-            <Text style={styles.exerciseName}>{(currentExercise as Exercise).name}</Text>
-            {state.elementTimer?.type === 'exercise' && (
-              <>
-                <Text>Exercise Time: {formatSeconds(state.elementTimer.elapsed)}</Text>
-                <Text style={styles.timeInfo}>
-                  {formatSeconds(currentExercise.properties?.time! - state.elementTimer.elapsed)}
-                </Text>
-              </>
-            )}
-            {currentExercise.properties?.video && (
-              <View style={styles.video}>
-                <YoutubePlayer
-                  height={200}
-                  initialPlayerParams={{
-                    loop: true,
-                    controls: false,
-                  }}
-                  forceAndroidAutoplay={true}
-                  play={true}
-                  mute={true}
-                  videoId={currentExercise.properties?.video}
-                />
-              </View>
-            )}
-          </>
-        ) : currentExercise.type === 'Rest' ? (
-          state.elementTimer?.type === 'rest' && (
-            <>
-              <Text style={styles.exerciseName}>Rest</Text>
-              <Text style={styles.timeInfo}>{formatSeconds(state.elementTimer.remaining)}</Text>
-            </>
-          )
-        ) : null}
-      </View>
+      {currentExercise.type === 'Exercise' && currentExercise.properties?.video && (
+        <View style={{ width: '100%' }}>
+          <YoutubePlayer
+            height={200}
+            initialPlayerParams={{
+              loop: true,
+              controls: false,
+            }}
+            forceAndroidAutoplay={true}
+            play={true}
+            mute={true}
+            videoId={currentExercise.properties?.video}
+          />
+        </View>
+      )}
+
+      <Bottom elapsedTime={state.elapsedTime} currentElement={currentExercise} elementTimer={state.elementTimer} />
 
       <View style={styles.controls}>
         <TouchableOpacity style={styles.button} onPress={handlePauseResume}>
@@ -127,15 +107,42 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: Palette.background,
-    padding: Size.Padding.Screen,
-    justifyContent: 'space-between',
-  },
+function Top({ elapsedTime, currentElement }: { elapsedTime: number; currentElement: WorkoutElement }) {
+  return (
+    <View style={styles.topContainer}>
+      <Text style={styles.elapsedTime}>Elapsed Time: {formatSeconds(elapsedTime)}</Text>
+      {currentElement.type === 'Exercise' ? (
+        <Text style={styles.exerciseTitle}>{currentElement.name}</Text>
+      ) : currentElement.type === 'Rest' ? (
+        <Text style={styles.exerciseTitle}>Rest</Text>
+      ) : null}
+    </View>
+  );
+}
 
+function Bottom({
+  elapsedTime,
+  currentElement,
+  elementTimer,
+}: {
+  elapsedTime: number;
+  currentElement: WorkoutElement;
+  elementTimer: ElementTimer;
+}) {
+  return (
+    <View style={styles.bottomContainer}>
+      {currentElement.type === 'Exercise'
+        ? elementTimer?.type === 'exercise' && (
+            <Text style={styles.timer}>{formatSeconds(currentElement.properties?.time! - elapsedTime)}</Text>
+          )
+        : currentElement.type === 'Rest'
+        ? elementTimer?.type === 'rest' && <Text style={styles.timer}>{formatSeconds(elementTimer.remaining)}</Text>
+        : null}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
   title: {
     fontSize: Size.Text.XXLarge,
     color: Palette.textPrimary,
@@ -151,38 +158,43 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 
-  statusContainer: {
+  completedContainer: {
     flex: 1,
-    backgroundColor: Palette.surface,
-    borderRadius: Size.BorderRadius.ListItem,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: Size.Padding.Large,
-    gap: Size.Gap.XXLarge,
+    padding: Size.Padding.Screen,
   },
 
-  totalTime: {
-    fontSize: 16,
-    fontWeight: '500',
+  container: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: Palette.background,
+    padding: Size.Padding.Screen,
+    justifyContent: 'space-between',
+  },
+  topContainer: {
+    alignItems: 'center',
+    gap: Size.Gap.Medium,
+  },
+  elapsedTime: {
     color: Palette.textMuted,
-  },
-
-  exerciseName: {
-    fontSize: 28,
     fontWeight: 'bold',
-    color: Palette.textPrimary,
-    textAlign: 'center',
+    fontSize: Size.Text.Small,
   },
-
-  timeInfo: {
+  exerciseTitle: {
+    fontSize: Size.Text.XXLarge * 2,
+    color: Palette.textPrimary,
+    fontWeight: 'bold',
+  },
+  bottomContainer: {
+    alignItems: 'center',
+    gap: Size.Gap.Medium,
+  },
+  timer: {
     fontSize: 48,
     fontWeight: 'bold',
     color: Palette.accent,
   },
-
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -207,16 +219,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: Palette.background,
-  },
-
-  completedContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: Size.Padding.Screen,
-  },
-
-  video: {
-    width: '100%',
   },
 });

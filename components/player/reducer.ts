@@ -2,7 +2,7 @@ import { Exercise, WorkoutElement } from '@/model/workout.types';
 import { bottomWithReturn } from '@/utils/bottom';
 import { WorkoutAction } from './actions';
 
-type ElementTimer = { type: 'rest'; remaining: number } | { type: 'exercise'; elapsed: number } | null;
+export type ElementTimer = { type: 'rest'; remaining: number } | { type: 'exercise'; elapsed: number } | null;
 
 interface WorkoutState {
   elements: WorkoutElement[];
