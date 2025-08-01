@@ -1,7 +1,10 @@
+import { Palette } from '@/constants/color';
+import { Size } from '@/constants/sizes';
 import { Exercise, Workout } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { createWorkoutActions } from './actions';
+import Button from '../Button';
+import { workoutActions } from './actions';
 import { initialState, workoutReducer } from './reducer';
 import { formatSeconds } from './utils';
 
@@ -13,59 +16,86 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
 
   // Timer effects
   useEffect(() => {
-    if (!state.isPaused && !state.isCompleted && !state.isStopped) {
+    if (state.playerStatus === 'playing') {
       intervalRef.current = setInterval(() => {
-        dispatch(createWorkoutActions.tickTotal());
-
-        if (state.isResting) {
-          dispatch(createWorkoutActions.tickRest());
-        } else {
-          dispatch(createWorkoutActions.tickExercise());
-        }
+        dispatch(workoutActions.tick());
       }, 1000);
     } else {
       clearInterval(intervalRef.current!);
     }
 
     return () => clearInterval(intervalRef.current!);
-  }, [state.isPaused, state.isCompleted, state.isResting, state.isStopped]);
+  }, [state.playerStatus]);
 
   const handleNextElement = () => {
-    dispatch(createWorkoutActions.nextElement());
+    dispatch(workoutActions.nextElement());
+  };
+
+  const handleStart = () => {
+    dispatch(workoutActions.startWorkout(workout.elements));
   };
 
   const handleStop = () => {
-    dispatch(createWorkoutActions.stopWorkout());
+    dispatch(workoutActions.stopWorkout());
   };
 
   const handlePauseResume = () => {
-    if (state.isPaused) {
-      dispatch(createWorkoutActions.resumeWorkout());
+    if (state.playerStatus === 'paused') {
+      dispatch(workoutActions.resumeWorkout());
     } else {
-      dispatch(createWorkoutActions.pauseWorkout());
+      dispatch(workoutActions.pauseWorkout());
     }
   };
 
+  if (state.playerStatus === 'stopped') {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>{workout.title}</Text>
+        <Text style={{ color: Palette.textMuted, textAlign: 'center' }}>{workout.description}</Text>
+        <Button onPress={handleStart} theme="primary" label="Start" icon="play-circle" />
+      </View>
+    );
+  }
+
+  if (state.playerStatus === 'completed') {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Completed! 🎉</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Workout Player</Text>
-
       <View style={styles.statusContainer}>
-        <Text style={styles.exerciseName}>{(currentExercise as Exercise)?.name || 'Workout Complete!'}</Text>
-        {!state.isCompleted && !state.isResting && (
-          <Text style={styles.timeInfo}>Exercise Time: {formatSeconds(state.exerciseTimeElapsed)}</Text>
-        )}
-        <Text style={styles.totalTime}>Total Time: {formatSeconds(state.totalWorkoutTime)}</Text>
-        {state.isResting && <Text style={styles.restTime}>Rest: {formatSeconds(state.restTimeRemaining)}</Text>}
+        <Text style={styles.totalTime}>Elapsed Time: {formatSeconds(state.elapsedTime)}</Text>
+
+        {currentExercise.type === 'Exercise' ? (
+          <>
+            <Text style={styles.exerciseName}>{(currentExercise as Exercise).name}</Text>
+            {state.elementTimer?.type === 'exercise' && (
+              <>
+                <Text>Exercise Time: {formatSeconds(state.elementTimer.elapsed)}</Text>
+                <Text style={styles.timeInfo}>
+                  {formatSeconds(currentExercise.properties?.time! - state.elementTimer.elapsed)}
+                </Text>
+              </>
+            )}
+          </>
+        ) : currentExercise.type === 'Rest' ? (
+          state.elementTimer?.type === 'rest' && (
+            <Text style={styles.timeInfo}>{formatSeconds(state.elementTimer.remaining)}</Text>
+          )
+        ) : null}
       </View>
 
       <View style={styles.controls}>
-        <TouchableOpacity style={styles.button} onPress={handlePauseResume} disabled={state.isCompleted}>
-          <Text style={styles.buttonText}>{state.isPaused ? 'Resume' : 'Pause'}</Text>
+        <TouchableOpacity style={styles.button} onPress={handlePauseResume}>
+          <Text style={styles.buttonText}>{state.playerStatus === 'paused' ? 'Resume' : 'Pause'}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleNextElement} disabled={state.isCompleted}>
-          <Text style={styles.buttonText}>Next Exercise</Text>
+        <TouchableOpacity style={styles.button} onPress={handleNextElement} disabled={state.playerStatus !== 'playing'}>
+          <Text style={styles.buttonText}>{state.elementTimer ? 'Skip' : 'Next'}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.stopButton]} onPress={handleStop}>
@@ -79,14 +109,17 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: Palette.background,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: Size.Padding.Screen,
+    gap: Size.Gap.Large,
   },
   title: {
-    fontSize: 24,
+    fontSize: Size.Text.XXLarge,
+    color: Palette.textPrimary,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 30,
   },
   statusContainer: {
     backgroundColor: 'white',
@@ -96,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   exerciseName: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 10,
   },
@@ -105,8 +138,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   timeInfo: {
-    fontSize: 16,
+    fontSize: 40,
     marginBottom: 5,
+    fontWeight: 'bold',
   },
   totalTime: {
     fontSize: 16,

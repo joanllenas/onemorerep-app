@@ -2,28 +2,22 @@ import { Exercise, WorkoutElement } from '@/model/workout.types';
 import { bottomWithReturn } from '@/utils/bottom';
 import { WorkoutAction } from './actions';
 
+type ElementTimer = { type: 'rest'; remaining: number } | { type: 'exercise'; elapsed: number } | null;
+
 interface WorkoutState {
   elements: WorkoutElement[];
   currentElementIndex: number;
-  isResting: boolean;
-  isPaused: boolean;
-  isCompleted: boolean;
-  isStopped: boolean;
-  restTimeRemaining: number;
-  exerciseTimeElapsed: number;
-  totalWorkoutTime: number;
+  playerStatus: 'playing' | 'paused' | 'stopped' | 'completed';
+  elementTimer: ElementTimer;
+  elapsedTime: number;
 }
 
 export const initialState: WorkoutState = {
   elements: [],
   currentElementIndex: 0,
-  isResting: false,
-  isPaused: false,
-  isCompleted: false,
-  isStopped: true,
-  restTimeRemaining: 0,
-  exerciseTimeElapsed: 0,
-  totalWorkoutTime: 0,
+  playerStatus: 'stopped',
+  elementTimer: null,
+  elapsedTime: 0,
 };
 
 export function workoutReducer(state: WorkoutState, action: WorkoutAction): WorkoutState {
@@ -31,32 +25,28 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
     case 'STOP_WORKOUT':
       return {
         ...initialState,
+        elements: state.elements,
       };
 
-    case 'START_WORKOUT':
+    case 'START_WORKOUT': {
       return {
         ...state,
-        currentElementIndex: 0,
-        isResting: false,
-        isPaused: false,
-        isCompleted: false,
-        isStopped: false,
-        restTimeRemaining: 0,
-        exerciseTimeElapsed: 0,
-        totalWorkoutTime: 0,
+        playerStatus: 'playing',
+        elementTimer: elementTimerFn(state),
       };
+    }
 
     case 'PAUSE_WORKOUT': {
       return {
         ...state,
-        isPaused: true,
+        playerStatus: 'paused',
       };
     }
 
     case 'RESUME_WORKOUT': {
       return {
         ...state,
-        isPaused: false,
+        playerStatus: 'playing',
       };
     }
 
@@ -64,53 +54,43 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
       return nextElementFn(state);
     }
 
-    case 'TICK_REST': {
-      const restTimeRemaining = Math.max(0, state.restTimeRemaining - 1);
-
-      if (restTimeRemaining === 0) {
-        return nextElementFn(state);
+    case 'TICK': {
+      if (state.elementTimer === null) {
+        return {
+          ...state,
+          elapsedTime: state.elapsedTime + 1,
+        };
       }
 
-      return {
-        ...state,
-        restTimeRemaining,
-      };
-    }
+      if (state.elementTimer.type === 'rest') {
+        const restTimeRemaining = Math.max(0, state.elementTimer.remaining - 1);
 
-    case 'TICK_EXERCISE': {
-      const currentExercise = state.elements[state.currentElementIndex] as Exercise;
+        if (restTimeRemaining === 0) {
+          return nextElementFn(state);
+        }
 
-      if (!currentExercise) {
-        console.log(state);
-        alert('no exercise');
+        return {
+          ...state,
+          elementTimer: { type: 'rest', remaining: restTimeRemaining },
+        };
       }
 
-      if (currentExercise.properties?.time !== undefined) {
-        const exerciseTimeElapsed = state.exerciseTimeElapsed + 1;
-        const timeRemaining = Math.max(0, currentExercise.properties.time - exerciseTimeElapsed);
+      if (state.elementTimer.type === 'exercise') {
+        const currentExercise = state.elements[state.currentElementIndex] as Exercise;
+        const exerciseTimeElapsed = state.elementTimer.elapsed + 1;
+        const timeRemaining = Math.max(0, currentExercise.properties?.time! - exerciseTimeElapsed);
+
         if (timeRemaining === 0) {
           return nextElementFn(state);
         }
 
         return {
           ...state,
-          exerciseTimeElapsed,
+          elementTimer: { type: 'exercise', elapsed: exerciseTimeElapsed },
         };
       }
-    }
 
-    case 'TICK_TOTAL': {
-      return {
-        ...state,
-        totalWorkoutTime: state.totalWorkoutTime + 1,
-      };
-    }
-
-    case 'COMPLETE_WORKOUT': {
-      return {
-        ...state,
-        isCompleted: true,
-      };
+      return bottomWithReturn(state.elementTimer, state);
     }
 
     default: {
@@ -118,6 +98,13 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
     }
   }
 }
+
+// ------------------------------------
+//
+//  UTILS
+//
+// ------------------------------------
+
 function nextElementFn(state: WorkoutState): WorkoutState {
   const nextIndex = state.currentElementIndex + 1;
   const isLastExercise = nextIndex >= state.elements.length;
@@ -125,34 +112,36 @@ function nextElementFn(state: WorkoutState): WorkoutState {
   if (isLastExercise) {
     return {
       ...state,
-      isCompleted: true,
+      playerStatus: 'completed',
     };
   }
 
-  const nextElement = state.elements[nextIndex] as WorkoutElement;
+  const nextElement = state.elements[nextIndex];
+
   if (nextElement.type === 'Exercise') {
     return {
       ...state,
       currentElementIndex: nextIndex,
-      isResting: false,
-      isPaused: false,
-      isCompleted: false,
-      isStopped: false,
-      restTimeRemaining: 0,
-      exerciseTimeElapsed: 0,
+      elementTimer: { type: 'exercise', elapsed: 0 },
     };
   } else if (nextElement.type === 'Rest') {
     return {
       ...state,
       currentElementIndex: nextIndex,
-      isResting: true,
-      isPaused: false,
-      isCompleted: false,
-      isStopped: false,
-      restTimeRemaining: nextElement.duration,
-      exerciseTimeElapsed: 0,
+      elementTimer: { type: 'rest', remaining: nextElement.duration },
     };
   }
 
-  throw new Error(`Unknown element type "${nextElement.type}"`);
+  throw new Error(`Illegal element type "${nextElement.type}"`);
+}
+
+function elementTimerFn(state: WorkoutState): ElementTimer {
+  const el = state.elements[state.currentElementIndex];
+  if (el.type === 'Rest') {
+    return { type: 'rest', remaining: el.duration };
+  }
+  if (el.type === 'Exercise' && el.properties?.time) {
+    return { type: 'exercise', elapsed: 0 };
+  }
+  return null;
 }
