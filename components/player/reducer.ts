@@ -1,6 +1,6 @@
 import { Exercise, WorkoutElement } from '@/model/workout.types';
 import { bottomWithReturn } from '@/utils/bottom';
-import { WorkoutAction } from './_actions';
+import { WorkoutAction } from './actions';
 
 interface WorkoutState {
   elements: WorkoutElement[];
@@ -79,6 +79,11 @@ export function workoutReducer(state: WorkoutState, action: WorkoutAction): Work
 
     case 'TICK_EXERCISE': {
       const currentExercise = state.elements[state.currentElementIndex] as Exercise;
+
+      if (!currentExercise) {
+        console.log(state);
+        alert('no exercise');
+      }
 
       if (currentExercise.properties?.time !== undefined) {
         const exerciseTimeElapsed = state.exerciseTimeElapsed + 1;

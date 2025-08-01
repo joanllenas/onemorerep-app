@@ -5,14 +5,6 @@ let id = 0;
 const mkId = (): string => {
   return `id-${(id++).toString(10).padStart(3, '0')}`;
 };
-// export const setElementIds = (elements: WorkoutElement[]) => {
-//   elements.forEach((el) => {
-//     el.id = mkId();
-//     if (el.type === 'Block') {
-//       setElementIds(el.elements);
-//     }
-//   });
-// };
 
 export function formatSeconds(seconds: number): string {
   const end = new Date();

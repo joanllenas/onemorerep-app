@@ -1,11 +1,11 @@
+import WorkoutPlayer from '@/components/player/WorkoutPlayer';
+import { flattenWorkoutElements } from '@/components/player/utils';
 import { Palette } from '@/constants/color';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import WorkoutPlayer from './_helpers/_WorkoutPlayer';
-import { flattenWorkoutElements } from './_helpers/_utils';
 
 export default function PlayWorkoutsScreen() {
   const { workout: workoutId } = useLocalSearchParams();

@@ -1,19 +1,19 @@
 import { Exercise, Workout } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { createWorkoutActions } from './_actions';
-import { initialState, workoutReducer } from './_reducer';
-import { formatSeconds } from './_utils';
+import { createWorkoutActions } from './actions';
+import { initialState, workoutReducer } from './reducer';
+import { formatSeconds } from './utils';
 
 export default function WorkoutPlayer({ workout }: { workout: Workout }) {
-  const [state, dispatch] = useReducer(workoutReducer, initialState);
+  const [state, dispatch] = useReducer(workoutReducer, workout, ({ elements }) => ({ ...initialState, elements }));
   const intervalRef = useRef<number | null>(null);
 
   const currentExercise = workout.elements[state.currentElementIndex];
 
   // Timer effects
   useEffect(() => {
-    if (!state.isPaused && !state.isCompleted) {
+    if (!state.isPaused && !state.isCompleted && !state.isStopped) {
       intervalRef.current = setInterval(() => {
         dispatch(createWorkoutActions.tickTotal());
 
