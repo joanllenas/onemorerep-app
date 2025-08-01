@@ -77,11 +77,11 @@ export function formatWeight(weight: string | number, suffix = ' Kg'): string {
   return '??';
 }
 
-export function formatRir(rir: number | number[]): string {
+export function formatRir(rir: number | number[], pereffix = 'rir '): string {
   if (typeof rir === 'number') {
-    return `${rir}`;
+    return `${pereffix}${rir}`;
   } else if (Array.isArray(rir)) {
-    return `(${rir.join('-')})`;
+    return `${pereffix}(${rir.join('-')})`;
   }
   return '??';
 }

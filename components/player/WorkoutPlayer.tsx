@@ -1,13 +1,13 @@
 import { Palette } from '@/constants/color';
 import { Size } from '@/constants/sizes';
-import { Workout, WorkoutElement } from '@/model/workout.types';
+import { Exercise, Workout, WorkoutElement } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../Button';
 import { workoutActions } from './actions';
 import { ElementTimer, initialState, workoutReducer } from './reducer';
-import { formatSeconds } from './utils';
+import { formatReps, formatRir, formatSeconds, formatWeight } from './utils';
 
 export default function WorkoutPlayer({ workout }: { workout: Workout }) {
   const [state, dispatch] = useReducer(workoutReducer, workout, ({ elements }) => ({ ...initialState, elements }));
@@ -131,13 +131,52 @@ function Bottom({
 }) {
   return (
     <View style={styles.bottomContainer}>
-      {currentElement.type === 'Exercise'
-        ? elementTimer?.type === 'exercise' && (
-            <Text style={styles.timer}>{formatSeconds(currentElement.properties?.time! - elapsedTime)}</Text>
-          )
-        : currentElement.type === 'Rest'
-        ? elementTimer?.type === 'rest' && <Text style={styles.timer}>{formatSeconds(elementTimer.remaining)}</Text>
-        : null}
+      {currentElement.type === 'Exercise' ? (
+        <ExerciseInfo elapsedTime={elapsedTime} elementTimer={elementTimer} exercise={currentElement} />
+      ) : currentElement.type === 'Rest' ? (
+        elementTimer?.type === 'rest' && <Text style={styles.timer}>{formatSeconds(elementTimer.remaining)}</Text>
+      ) : null}
+    </View>
+  );
+}
+
+function ExerciseInfo({
+  exercise,
+  elementTimer,
+  elapsedTime,
+}: {
+  exercise: Exercise;
+  elementTimer: ElementTimer;
+  elapsedTime: number;
+}) {
+  return (
+    <View style={{ gap: 20, alignItems: 'center', width: '100%' }}>
+      {elementTimer?.type === 'exercise' && (
+        <Text style={styles.timer}>{formatSeconds(exercise.properties?.time! - elapsedTime)}</Text>
+      )}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          width: '100%',
+          backgroundColor: Palette.surface,
+          padding: Size.Padding.Medium,
+          borderRadius: Size.BorderRadius.ListItem,
+        }}
+      >
+        {exercise.properties?.weight && (
+          <Text style={styles.exerciseProperties}>{formatWeight(exercise.properties.weight)}</Text>
+        )}
+        {exercise.properties?.reps && (
+          <Text style={[styles.exerciseProperties, { fontSize: 40, color: Palette.textPrimary }]}>
+            {formatReps(exercise.properties.reps, 'x')}
+          </Text>
+        )}
+        {exercise.properties?.rir && (
+          <Text style={styles.exerciseProperties}>{formatRir(exercise.properties.rir)}</Text>
+        )}
+      </View>
     </View>
   );
 }
@@ -185,6 +224,12 @@ const styles = StyleSheet.create({
     fontSize: Size.Text.XXLarge * 2,
     color: Palette.textPrimary,
     fontWeight: 'bold',
+  },
+  exerciseProperties: {
+    fontSize: Size.Text.XLarge,
+    color: Palette.textMuted,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   bottomContainer: {
     alignItems: 'center',
