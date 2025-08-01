@@ -50,17 +50,19 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
   if (state.playerStatus === 'stopped') {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>{workout.title}</Text>
-        <Text style={{ color: Palette.textMuted, textAlign: 'center' }}>{workout.description}</Text>
-        <Button onPress={handleStart} theme="primary" label="Start" icon="play-circle" />
+        <View>
+          <Text style={styles.title}>{workout.title}</Text>
+          <Text style={styles.description}>{workout.description}</Text>
+        </View>
+        <Button onPress={handleStart} theme="primary" label="Start Workout" icon="play-circle" />
       </View>
     );
   }
 
   if (state.playerStatus === 'completed') {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Completed! 🎉</Text>
+      <View style={styles.completedContainer}>
+        <Text style={styles.title}>Workout Completed! 🎉</Text>
       </View>
     );
   }
@@ -112,64 +114,88 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
     backgroundColor: Palette.background,
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: Size.Padding.Screen,
-    gap: Size.Gap.Large,
+    justifyContent: 'space-between',
   },
+
   title: {
     fontSize: Size.Text.XXLarge,
     color: Palette.textPrimary,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  statusContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 10,
-    marginBottom: 30,
-    alignItems: 'center',
-  },
-  exerciseName: {
-    fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 10,
   },
-  setInfo: {
-    fontSize: 16,
-    marginBottom: 5,
+
+  description: {
+    fontSize: Size.Text.Medium,
+    color: Palette.textMuted,
+    textAlign: 'center',
+    marginBottom: 30,
   },
-  timeInfo: {
-    fontSize: 40,
-    marginBottom: 5,
-    fontWeight: 'bold',
+
+  statusContainer: {
+    backgroundColor: Palette.surface,
+    padding: 24,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+    alignItems: 'center',
+    gap: 12,
   },
+
   totalTime: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
+    fontWeight: '500',
+    color: Palette.textMuted,
   },
-  restTime: {
-    fontSize: 18,
-    color: 'orange',
+
+  exerciseName: {
+    fontSize: 28,
     fontWeight: 'bold',
+    color: Palette.textPrimary,
+    textAlign: 'center',
   },
+
+  timeInfo: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: Palette.accent,
+  },
+
   controls: {
-    gap: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: Size.Gap.Large,
+    marginTop: 30,
   },
+
   button: {
-    backgroundColor: '#007AFF',
-    padding: 15,
-    borderRadius: 8,
+    flex: 1,
+    backgroundColor: Palette.accentHover,
+    paddingHorizontal: Size.Padding.Large,
+    paddingVertical: Size.Padding.Medium,
+    borderRadius: 12,
     alignItems: 'center',
   },
+
   stopButton: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: Palette.danger,
   },
+
   buttonText: {
-    color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: Palette.background,
+  },
+
+  completedContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Size.Padding.Screen,
   },
 });
