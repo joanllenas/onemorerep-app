@@ -20,7 +20,9 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
         properties: {
           reps: 5,
           weight: 120,
+          time: 60,
           rir: 2,
+          video: 'https://youtu.be/okrClTKjusk?si=J9axbKb8ka5EVjiZ',
         },
       },
       {
@@ -31,10 +33,11 @@ const dummyWorkoutsCollection: WorkoutDto[] = [
       {
         id: 'e2',
         type: 'Exercise',
-        name: 'Pull-Up',
+        name: 'Snatch',
         properties: {
           reps: 'AMRAP',
           rir: [1, 2],
+          video: 'https://youtu.be/PvY_E3qUnQA?si=8ZLpvY3MaU6UtPCL',
         },
       },
     ],

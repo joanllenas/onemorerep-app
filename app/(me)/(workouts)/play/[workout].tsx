@@ -1,5 +1,5 @@
 import WorkoutPlayer from '@/components/player/WorkoutPlayer';
-import { flattenWorkoutElements } from '@/components/player/utils';
+import { flattenWorkoutElements, sanitizeVideoUrls } from '@/components/player/utils';
 import { Palette } from '@/constants/color';
 import { Workout } from '@/model/workout.types';
 import { fetchWorkouts } from '@/utils/dummy-data';
@@ -19,7 +19,7 @@ export default function PlayWorkoutsScreen() {
         if (!wk) {
           throw new Error(`Workout ${workoutId} not found.`);
         }
-        setWorkout({ ...wk, elements: flattenWorkoutElements(wk.elements) });
+        setWorkout({ ...wk, elements: sanitizeVideoUrls(flattenWorkoutElements(wk.elements)) });
         setLoading(false);
       })
       .catch((error) => {

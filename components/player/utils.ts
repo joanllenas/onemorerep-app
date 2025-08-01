@@ -46,6 +46,17 @@ const flatten = (elements: WorkoutElement[]): WorkoutElement[] => {
   }, [] as WorkoutElement[]);
 };
 
+export const sanitizeVideoUrls = (elements: WorkoutElement[]): WorkoutElement[] =>
+  elements.map((el) => {
+    if (el.type === 'Exercise' && el.properties?.video) {
+      return {
+        ...el,
+        properties: { ...el.properties, video: sanitizeVideoUrl(el.properties.video) },
+      };
+    }
+    return el;
+  });
+
 // Exercise
 
 export const exerciseHasProperties = (ex: Exercise) =>
@@ -75,15 +86,11 @@ export function formatRir(rir: number | number[]): string {
   return '??';
 }
 
-export function sanitizeVideoUrl(shareUrl: string) {
-  const embedUrl = formatYoutubeEmbedUrl(shareUrl);
-  if (embedUrl) {
-    return `${embedUrl}?mute=1`;
-  }
-  return '';
+export function sanitizeVideoUrl(shareUrl: string): string | undefined {
+  return formatYoutubeEmbedId(shareUrl);
 }
 
-function formatYoutubeEmbedUrl(url: string) {
+function formatYoutubeEmbedId(url: string): string | undefined {
   let videoId = '';
 
   // Test for standard "watch" URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)
@@ -106,8 +113,8 @@ function formatYoutubeEmbedUrl(url: string) {
 
   // If a video ID was found, return the embed URL, otherwise return null
   if (videoId) {
-    return `https://www.youtube.com/embed/${videoId}`;
+    return videoId;
   } else {
-    return ''; // Invalid URL or no video ID found
+    return undefined; // Invalid URL or no video ID found
   }
 }

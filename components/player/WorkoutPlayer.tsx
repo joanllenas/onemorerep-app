@@ -3,6 +3,7 @@ import { Size } from '@/constants/sizes';
 import { Exercise, Workout } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import Button from '../Button';
 import { workoutActions } from './actions';
 import { initialState, workoutReducer } from './reducer';
@@ -83,6 +84,21 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
                 </Text>
               </>
             )}
+            {currentExercise.properties?.video && (
+              <View style={styles.video}>
+                <YoutubePlayer
+                  height={200}
+                  initialPlayerParams={{
+                    loop: true,
+                    controls: false,
+                  }}
+                  forceAndroidAutoplay={true}
+                  play={true}
+                  mute={true}
+                  videoId={currentExercise.properties?.video}
+                />
+              </View>
+            )}
           </>
         ) : currentExercise.type === 'Rest' ? (
           state.elementTimer?.type === 'rest' && (
@@ -136,15 +152,16 @@ const styles = StyleSheet.create({
   },
 
   statusContainer: {
+    flex: 1,
     backgroundColor: Palette.surface,
-    padding: 24,
-    borderRadius: 16,
+    borderRadius: Size.BorderRadius.ListItem,
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
     alignItems: 'center',
-    gap: 12,
+    paddingVertical: Size.Padding.Large,
+    gap: Size.Gap.XXLarge,
   },
 
   totalTime: {
@@ -197,5 +214,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: Size.Padding.Screen,
+  },
+
+  video: {
+    width: '100%',
   },
 });
