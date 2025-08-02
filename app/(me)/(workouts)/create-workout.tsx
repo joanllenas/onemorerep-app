@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   workoutContainerKeyboard: {
-    flex: 0.3,
+    flex: 0,
   },
   workoutTitle: {
     fontSize: 20,
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   chatContainerKeyboard: {
-    flex: 0.7,
+    flex: 1,
   },
   chatTitle: {
     fontSize: 18,
