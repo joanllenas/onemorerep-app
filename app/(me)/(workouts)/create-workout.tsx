@@ -206,7 +206,7 @@ export default function CreateWorkoutScreen() {
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 90}
       >
         {/* Workout Display - Top Half */}
         <View style={[styles.workoutContainer, keyboardHeight > 0 && styles.workoutContainerKeyboard]}>
