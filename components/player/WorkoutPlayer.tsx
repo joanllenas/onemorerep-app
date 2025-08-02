@@ -3,7 +3,7 @@ import { Size } from '@/constants/sizes';
 import { Exercise, Workout, WorkoutElement } from '@/model/workout.types';
 import React, { useEffect, useReducer, useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import YoutubePlayer from 'react-native-youtube-iframe';
+import WebView from 'react-native-webview';
 import Button from '../Button';
 import { workoutActions } from './actions';
 import { ElementTimer, initialState, workoutReducer } from './reducer';
@@ -50,7 +50,7 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
 
   if (state.playerStatus === 'stopped') {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, { padding: Size.Padding.Screen }]}>
         <View>
           <Text style={styles.title}>{workout.title}</Text>
           <Text style={styles.description}>{workout.description}</Text>
@@ -73,19 +73,7 @@ export default function WorkoutPlayer({ workout }: { workout: Workout }) {
       <Top elapsedTime={state.elapsedTime} currentElement={currentExercise} />
 
       {currentExercise.type === 'Exercise' && currentExercise.properties?.video && (
-        <View style={{ width: '100%' }}>
-          <YoutubePlayer
-            height={200}
-            initialPlayerParams={{
-              loop: true,
-              controls: false,
-            }}
-            forceAndroidAutoplay={true}
-            play={true}
-            mute={true}
-            videoId={currentExercise.properties?.video}
-          />
-        </View>
+        <Player videoUrl={currentExercise.properties.video} />
       )}
 
       <Bottom elapsedTime={state.elapsedTime} currentElement={currentExercise} elementTimer={state.elementTimer} />
@@ -116,6 +104,38 @@ function Top({ elapsedTime, currentElement }: { elapsedTime: number; currentElem
       ) : currentElement.type === 'Rest' ? (
         <Text style={styles.exerciseTitle}>Rest</Text>
       ) : null}
+    </View>
+  );
+}
+
+function Player({ videoUrl }: { videoUrl: string }) {
+  return (
+    <View style={{ width: '100%', height: 315 }}>
+      <WebView
+        style={{ width: '100%', height: '100%' }}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        source={{
+          html: `
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              </head>
+              <body style="margin:0; padding:0;">
+                <iframe 
+                  width="100%" height="315"
+                  src="${videoUrl}?mute=1&autoplay=1" 
+                  frameborder="0" 
+                  allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                </iframe>
+              </body>
+            </html>
+          `,
+        }}
+        originWhitelist={['*']}
+      />
     </View>
   );
 }
@@ -208,10 +228,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: Palette.background,
-    padding: Size.Padding.Screen,
     justifyContent: 'space-between',
   },
   topContainer: {
+    paddingHorizontal: Size.Padding.Screen,
     alignItems: 'center',
     gap: Size.Gap.Medium,
   },
@@ -232,6 +252,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   bottomContainer: {
+    paddingHorizontal: Size.Padding.Screen,
     alignItems: 'center',
     gap: Size.Gap.Medium,
   },
@@ -243,6 +264,7 @@ const styles = StyleSheet.create({
   controls: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: Size.Padding.Screen,
     gap: Size.Gap.Large,
     marginTop: 30,
   },
@@ -250,7 +272,6 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     backgroundColor: Palette.accentHover,
-    paddingHorizontal: Size.Padding.Large,
     paddingVertical: Size.Padding.Medium,
     borderRadius: 12,
     alignItems: 'center',

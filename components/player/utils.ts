@@ -86,11 +86,15 @@ export function formatRir(rir: number | number[], pereffix = 'rir '): string {
   return '??';
 }
 
-export function sanitizeVideoUrl(shareUrl: string): string | undefined {
-  return formatYoutubeEmbedId(shareUrl);
+export function sanitizeVideoUrl(shareUrl: string) {
+  const embedUrl = formatYoutubeEmbedUrl(shareUrl);
+  if (embedUrl) {
+    return embedUrl;
+  }
+  return '';
 }
 
-function formatYoutubeEmbedId(url: string): string | undefined {
+function formatYoutubeEmbedUrl(url: string) {
   let videoId = '';
 
   // Test for standard "watch" URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ)
@@ -113,8 +117,8 @@ function formatYoutubeEmbedId(url: string): string | undefined {
 
   // If a video ID was found, return the embed URL, otherwise return null
   if (videoId) {
-    return videoId;
+    return `https://www.youtube.com/embed/${videoId}`;
   } else {
-    return undefined; // Invalid URL or no video ID found
+    return ''; // Invalid URL or no video ID found
   }
 }
