@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import { Palette } from '@/constants/color';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
@@ -29,6 +31,33 @@ export default function CreateWorkoutScreen() {
   const [inputText, setInputText] = useState('');
   const [currentWorkout, setCurrentWorkout] = useState<Wk | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const flatListRef = useRef<FlatList | null>(null);
+
+  // Handle keyboard events
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
+      setKeyboardHeight(e.endCoordinates.height);
+    });
+
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardHeight(0);
+    });
+
+    return () => {
+      keyboardDidShowListener?.remove();
+      keyboardDidHideListener?.remove();
+    };
+  }, []);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    if (messages.length > 0 && flatListRef.current) {
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 100);
+    }
+  }, [messages]);
 
   // Mock AI service that generates workout JSON
   const mockAIService = async (userMessage: string, conversationHistory: Msg[]) => {
@@ -123,6 +152,8 @@ export default function CreateWorkoutScreen() {
   };
 
   const sendMessage = async () => {
+    Keyboard.dismiss();
+
     if (!inputText.trim()) return;
 
     const userMessage = {
@@ -172,9 +203,13 @@ export default function CreateWorkoutScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}
+      >
         {/* Workout Display - Top Half */}
-        <View style={styles.workoutContainer}>
+        <View style={[styles.workoutContainer, keyboardHeight > 0 && styles.workoutContainerKeyboard]}>
           <Text style={styles.workoutTitle}>Current Workout</Text>
           {currentWorkout ? (
             <ScrollView style={styles.workoutContent}>
@@ -196,15 +231,22 @@ export default function CreateWorkoutScreen() {
         </View>
 
         {/* Chat Interface - Bottom Half */}
-        <View style={styles.chatContainer}>
+        <View style={[styles.chatContainer, keyboardHeight > 0 && styles.chatContainerKeyboard]}>
           <Text style={styles.chatTitle}>Workout Assistant</Text>
 
           <FlatList
+            ref={flatListRef}
             data={messages}
             renderItem={renderMessage}
             keyExtractor={(item) => item.id.toString()}
             style={styles.messagesList}
             showsVerticalScrollIndicator={false}
+            onContentSizeChange={() => {
+              // Auto-scroll when content size changes
+              if (messages.length > 0) {
+                flatListRef.current?.scrollToEnd({ animated: true });
+              }
+            }}
           />
 
           {isLoading && (
@@ -239,7 +281,7 @@ export default function CreateWorkoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: Palette.background,
   },
 
   // Workout Display Styles
@@ -255,6 +297,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  workoutContainerKeyboard: {
+    flex: 0.3,
   },
   workoutTitle: {
     fontSize: 20,
@@ -328,6 +373,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  chatContainerKeyboard: {
+    flex: 0.7,
   },
   chatTitle: {
     fontSize: 18,
