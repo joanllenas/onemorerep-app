@@ -1,4 +1,6 @@
 import { Palette } from '@/constants/color';
+import { workoutDecoder } from '@/model/workout.decoder';
+import { Workout, WorkoutElement } from '@/model/workout.types';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
@@ -14,28 +16,36 @@ import {
   View,
 } from 'react-native';
 
+const FUNCTION_ID = '688f96f2003b7ee97283';
+
+type ChatMessage = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+};
+
+type GenerateWorkoutResponse = {
+  assistantMessage: ChatMessage;
+  tokensUsed: number;
+};
+
 interface Msg {
   id: number;
   text: string;
   sender: string;
   timestamp: Date;
 }
-interface Wk {
-  name: string;
-  exercises: string[];
-  duration: string;
-}
 
 export default function CreateWorkoutScreen() {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [inputText, setInputText] = useState('');
-  const [currentWorkout, setCurrentWorkout] = useState<Wk | null>(null);
+  const [currentWorkout, setCurrentWorkout] = useState<Workout | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const flatListRef = useRef<FlatList | null>(null);
 
   // Handle keyboard events
   useEffect(() => {
+    console.log('ok');
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', (e) => {
       setKeyboardHeight(e.endCoordinates.height);
     });
@@ -59,96 +69,50 @@ export default function CreateWorkoutScreen() {
     }
   }, [messages]);
 
-  // Mock AI service that generates workout JSON
-  const mockAIService = async (userMessage: string, conversationHistory: Msg[]) => {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+  // AI service that generates workout JSON
+  const callAIService = async (userMessage: string, conversationHistory: Msg[]) => {
+    try {
+      console.log('trying...');
+      /*const execution = await functions.createExecution(
+        FUNCTION_ID,
+        JSON.stringify([{ role: 'user', content: 'Create a short strength workout that targets chest and back' }])
+      );*/
+      const execution = { errors: undefined, responseBody: JSON.stringify(functionResponse()) };
+      console.log('executed: Errors: ', execution.errors);
+      if (execution.errors) {
+        alert('Error1: ' + execution.errors);
+        return {
+          message: 'There has been an error: ' + execution.errors,
+          workout: {
+            id: 'bad',
+            title: ' bad',
+            description: 'bad',
+            elements: [{ type: 'Rest', duration: 1000 }],
+          } as Workout,
+        };
+      } else {
+        console.log('executed: responseBody: ', execution.responseBody);
+        const workoutResponse: GenerateWorkoutResponse = JSON.parse(execution.responseBody);
+        console.log('parsed responseBody: ', workoutResponse);
+        const workout = await workoutDecoder.decodePromise(workoutResponse.assistantMessage.content);
 
-    const workouts: Record<string, Wk> = {
-      beginner: {
-        name: 'Beginner Full Body Workout',
-        duration: '30 minutes',
-        exercises: [
-          '5 minutes warm-up walk',
-          '10 bodyweight squats',
-          '5 push-ups (knees down if needed)',
-          '30-second plank',
-          '10 lunges (5 each leg)',
-          '10 arm circles',
-          '5 minutes cool-down stretch',
-        ],
-      },
-      strength: {
-        name: 'Strength Training Circuit',
-        duration: '45 minutes',
-        exercises: [
-          '10 minutes dynamic warm-up',
-          '3 sets of 8-12 deadlifts',
-          '3 sets of 8-10 bench press',
-          '3 sets of 10-15 squats',
-          '3 sets of 8-10 rows',
-          '3 sets of 30-60 second planks',
-          '10 minutes stretching',
-        ],
-      },
-      cardio: {
-        name: 'High-Intensity Cardio',
-        duration: '25 minutes',
-        exercises: [
-          '5 minutes light jogging warm-up',
-          '30 seconds jumping jacks',
-          '30 seconds mountain climbers',
-          '30 seconds burpees',
-          '30 seconds rest',
-          'Repeat circuit 4 times',
-          '5 minutes walking cool-down',
-        ],
-      },
-      upper: {
-        name: 'Upper Body Focus',
-        duration: '40 minutes',
-        exercises: [
-          '5 minutes arm swings and stretches',
-          '3 sets of 10-12 push-ups',
-          '3 sets of 8-10 pull-ups or assisted pull-ups',
-          '3 sets of 12-15 dumbbell rows',
-          '3 sets of 10-12 shoulder press',
-          '3 sets of 12-15 tricep dips',
-          '10 minutes upper body stretching',
-        ],
-      },
-    };
-
-    // Simple keyword matching for demo
-    const message = userMessage.toLowerCase();
-    let selectedWorkout;
-
-    if (message.includes('beginner') || message.includes('start') || message.includes('easy')) {
-      selectedWorkout = workouts.beginner;
-    } else if (message.includes('strength') || message.includes('weights') || message.includes('muscle')) {
-      selectedWorkout = workouts.strength;
-    } else if (message.includes('cardio') || message.includes('running') || message.includes('heart')) {
-      selectedWorkout = workouts.cardio;
-    } else if (message.includes('upper') || message.includes('arms') || message.includes('chest')) {
-      selectedWorkout = workouts.upper;
-    } else {
-      // Default to beginner if no keywords match
-      selectedWorkout = workouts.beginner;
-    }
-
-    // Modify workout based on conversation history
-    if (conversationHistory.length > 1) {
-      selectedWorkout = {
-        ...selectedWorkout,
-        name: `${selectedWorkout.name} (Refined)`,
-        exercises: [...selectedWorkout.exercises, 'Added: 2 minutes breathing exercises'],
+        return {
+          message: `I've created the workout.\n${workout.title} - ${workout.description}\nFeel free to ask for modifications!`,
+          workout,
+        };
+      }
+    } catch (err) {
+      alert('Error2: ' + err);
+      return {
+        message: 'There has been an error: ' + err,
+        workout: {
+          id: 'bad',
+          title: ' bad',
+          description: 'bad',
+          elements: [{ type: 'Rest', duration: 1000 }],
+        } as Workout,
       };
     }
-
-    return {
-      message: `I've created a ${selectedWorkout.name} for you! This workout focuses on your requested goals and should take about ${selectedWorkout.duration}. Feel free to ask for modifications!`,
-      workout: selectedWorkout,
-    };
   };
 
   const sendMessage = async () => {
@@ -168,7 +132,7 @@ export default function CreateWorkoutScreen() {
     setIsLoading(true);
 
     try {
-      const response = await mockAIService(inputText, messages);
+      const response = await callAIService(inputText, messages);
 
       const aiMessage = {
         id: Date.now() + 1,
@@ -194,10 +158,10 @@ export default function CreateWorkoutScreen() {
     </View>
   );
 
-  const renderWorkoutStep = ({ item, index }: { item: string; index: number }) => (
+  const renderWorkoutStep = ({ item, index }: { item: WorkoutElement; index: number }) => (
     <View style={styles.workoutStep}>
       <Text style={styles.stepNumber}>{index + 1}.</Text>
-      <Text style={styles.stepText}>{item}</Text>
+      <Text style={styles.stepText}>{item.type}</Text>
     </View>
   );
 
@@ -213,10 +177,9 @@ export default function CreateWorkoutScreen() {
           <Text style={styles.workoutTitle}>Current Workout</Text>
           {currentWorkout ? (
             <ScrollView style={styles.workoutContent}>
-              <Text style={styles.workoutName}>{currentWorkout.name}</Text>
-              <Text style={styles.workoutDuration}>Duration: {currentWorkout.duration}</Text>
+              <Text style={styles.workoutName}>{currentWorkout.title}</Text>
               <FlatList
-                data={currentWorkout.exercises}
+                data={currentWorkout.elements}
                 renderItem={renderWorkoutStep}
                 keyExtractor={(item, index) => index.toString()}
                 scrollEnabled={false}
@@ -455,3 +418,147 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+function functionResponse() {
+  return {
+    assistantMessage: {
+      role: 'assistant',
+      content: wkout(),
+    },
+    tokensUsed: 4000,
+  };
+}
+
+function wkout() {
+  return {
+    id: 'w1',
+    title: 'Short Chest and Back Strength Workout',
+    description: 'A quick strength session targeting chest and back using supersets.',
+    elements: [
+      {
+        id: 'e_warmup',
+        type: 'Exercise',
+        name: 'Dynamic Chest and Back Warm-up',
+        properties: {
+          time: 120,
+          distance: 0,
+          reps: null,
+          weight: null,
+          rir: 0,
+          video: '',
+        },
+      },
+      {
+        id: 'block1',
+        type: 'Block',
+        name: 'Bench Press & Bent-over Row Superset',
+        elements: [
+          {
+            id: 'e_bp',
+            type: 'Exercise',
+            name: 'Bench Press',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 8,
+              weight: 100,
+              rir: 2,
+              video: '',
+            },
+          },
+          {
+            id: 'e_br',
+            type: 'Exercise',
+            name: 'Bent-over Row',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 8,
+              weight: 80,
+              rir: 2,
+              video: '',
+            },
+          },
+        ],
+        properties: {
+          sets: 4,
+          restBetweenSets: 90,
+        },
+      },
+      {
+        id: 'block2',
+        type: 'Block',
+        name: 'Push-up & Pull-up Superset',
+        elements: [
+          {
+            id: 'e_pushup',
+            type: 'Exercise',
+            name: 'Push-up',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 'AMRAP',
+              weight: 'bodyweight',
+              rir: 0,
+              video: '',
+            },
+          },
+          {
+            id: 'e_pullup',
+            type: 'Exercise',
+            name: 'Pull-up',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 'AMRAP',
+              weight: 'bodyweight',
+              rir: 0,
+              video: '',
+            },
+          },
+        ],
+        properties: {
+          sets: 3,
+          restBetweenSets: 90,
+        },
+      },
+      {
+        id: 'block3',
+        type: 'Block',
+        name: 'Dumbbell Fly & Single-arm Row Superset',
+        elements: [
+          {
+            id: 'e_fly',
+            type: 'Exercise',
+            name: 'Dumbbell Fly',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 12,
+              weight: 15,
+              rir: 1,
+              video: '',
+            },
+          },
+          {
+            id: 'e_row_sa',
+            type: 'Exercise',
+            name: 'Single-arm Dumbbell Row',
+            properties: {
+              time: 0,
+              distance: 0,
+              reps: 12,
+              weight: 20,
+              rir: 1,
+              video: '',
+            },
+          },
+        ],
+        properties: {
+          sets: 3,
+          restBetweenSets: 60,
+        },
+      },
+    ],
+  };
+}
