@@ -1,4 +1,4 @@
-import { Account, Client } from 'react-native-appwrite';
+import { Account, Client, Functions } from 'react-native-appwrite';
 
 const endpoint = process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT;
 const projectId = process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID;
@@ -9,3 +9,4 @@ if (!endpoint || !projectId) {
 const client = new Client();
 client.setEndpoint(endpoint).setProject(projectId).setPlatform('app.onemorerep');
 export const account = new Account(client);
+export const functions = new Functions(client);
